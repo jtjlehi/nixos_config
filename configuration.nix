@@ -20,7 +20,6 @@
     useExperimentalGPUDriver = true;
     experimentalGPUInstallMode = "overlay";
     peripheralFirmwareDirectory = ./asahi-firmware;
-    add
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -91,6 +90,7 @@
   environment.systemPackages = with pkgs; [
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     # wget
+    git
   ];
   environment.sessionVariables = {
     # help GPU work with asahi
