@@ -52,10 +52,8 @@
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
-  programs.sway = {
-    enable = true;
-
-  };
+  security.polkit.enable = true;
+  programs.sway.enable = true;
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";

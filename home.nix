@@ -9,7 +9,19 @@
   # sway
   wayland.windowManager.sway = {
     enable = true;
-    config.modifier = "Mod4";
+    config = {
+      modifier = "Mod4";
+      input = {
+        "*" = {
+          xkb_options = "ctrl:swapcaps";
+        };
+        "type:touchpad" = {
+          dwt = "enabled";
+          natural_scroll = "disabled";
+          click_method = "button_areas";
+        };
+      };
+    };
   };
 
   # The home.packages option allows you to install Nix packages into your
