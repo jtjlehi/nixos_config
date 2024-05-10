@@ -31,6 +31,7 @@
             (final: prev: { mesa = final.mesa-asahi-edge; })
           ];
         };
+        extraSpecialArgs = { inherit inputs; };
         modules = [ ./home.nix ];
       };
     };

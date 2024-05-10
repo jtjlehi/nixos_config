@@ -1,6 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  imports = [ ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "yajj";
@@ -22,6 +23,13 @@
         };
       };
     };
+  };
+
+  # git
+  programs.git = {
+    enable = true;
+    userName = "jtjlehi";
+    userEmail = "jtjlehi@gmail.com";
   };
 
   # The home.packages option allows you to install Nix packages into your
