@@ -22,8 +22,13 @@
           click_method = "button_areas";
         };
       };
+      bars = [
+        { command = "waybar"; }
+      ];
     };
   };
+  # waybar
+  programs.waybar.enable = true;
 
   # git
   programs.git = {
@@ -41,6 +46,7 @@
   in [
     firefox
     neovim
+    waybar
   ] ++ compilers ++ lang-servers;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -9,18 +9,8 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware/asahi.nix
-    # Asahi stuff
-    apple-silicon.nixosModules.apple-silicon-support
+    ./asahi-config.nix
   ];
-  # nixpkgs.overlays = [ apple-silicon.overlays.apple-silicon-overlay ];
-  hardware.asahi = {
-    withRust = true;
-    useExperimentalGPUDriver = true;
-    experimentalGPUInstallMode = "overlay";
-    peripheralFirmwareDirectory = ./asahi-firmware;
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -36,7 +26,7 @@
   };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "US/Denver";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -50,14 +40,10 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
   security.polkit.enable = true;
   programs.sway.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ ];
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -65,10 +51,10 @@
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -79,13 +65,7 @@
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = [ pkgs.git ];
-  environment.sessionVariables = {
-    # help GPU work with asahi
-    WLR_DRM_DEVICES = "/dev/dri/card0";
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
