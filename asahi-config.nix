@@ -1,5 +1,9 @@
-{ config, pkgs, apple-silicon, ... }:
 {
+  config,
+  pkgs,
+  apple-silicon,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware/asahi.nix

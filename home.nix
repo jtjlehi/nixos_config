@@ -1,7 +1,10 @@
-{ config, pkgs, inputs, ... }:
-
 {
-  imports = [ ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "yajj";
@@ -23,7 +26,7 @@
         };
       };
       bars = [
-        { command = "waybar"; }
+        {command = "waybar";}
       ];
     };
   };
@@ -33,15 +36,15 @@
     left = [
       {
         name = "sway/workspaces";
-        config = { disable-scroll = true; };
+        config = {disable-scroll = true;};
       }
-      { name = "sway/scratchpad"; }
-      { name = "sway/window"; }
+      {name = "sway/scratchpad";}
+      {name = "sway/window";}
     ];
-    center = [ 
+    center = [
       {
         name = "sway/mode";
-        config = { format = "<span style=\"italic\">{}</span>"; };
+        config = {format = "<span style=\"italic\">{}</span>";};
       }
     ];
     right = [
@@ -128,7 +131,7 @@
       }
       {
         name = "tray";
-        config = { spacing = 10; };
+        config = {spacing = 10;};
       }
     ];
     init = {
@@ -144,7 +147,7 @@
       (builtins.foldl'
         (acc: attrs:
           if attrs ? "config"
-          then acc // { ${attrs.name} = attrs.config; }
+          then acc // {${attrs.name} = attrs.config;}
           else acc)
         init
         (left ++ center ++ right))
@@ -161,15 +164,22 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; let 
-    compilers = [ zig ];
-    lang-servers = [ lua-language-server nil ];
-  in [
-    firefox
-    neovim
-    waybar
-    wl-clipboard
-  ] ++ compilers ++ lang-servers;
+  home.packages = with pkgs; let
+    compilers = [zig];
+    lang-servers = [
+      lua-language-server
+      nil
+      alejandra
+    ];
+  in
+    [
+      firefox
+      neovim
+      waybar
+      wl-clipboard
+    ]
+    ++ compilers
+    ++ lang-servers;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.

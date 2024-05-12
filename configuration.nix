@@ -1,12 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, apple-silicon, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  apple-silicon,
+  ...
+}: {
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
   };
   imports = [
     ./asahi-config.nix
@@ -48,10 +51,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yajj = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "network" ];
+    extraGroups = ["wheel" "network"];
   };
 
-  environment.systemPackages = [ pkgs.git ];
+  environment.systemPackages = [pkgs.git];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
