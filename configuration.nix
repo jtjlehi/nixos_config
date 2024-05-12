@@ -64,7 +64,6 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
 
