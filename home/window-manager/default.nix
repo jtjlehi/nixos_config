@@ -5,6 +5,7 @@
   ];
   wayland.windowManager.sway = {
     enable = true;
+    extraConfig = builtins.readFile ./sway;
     config = {
       modifier = "Mod4";
       input = {
@@ -21,6 +22,11 @@
         "*".bg = "${../../photos/mount-timp-wallpaper.jpg} fill";
       };
       bars = [{command = "waybar";}];
+      window = {
+        hideEdgeBorders = "smart";
+        border = 3;
+        titlebar = false;
+      };
     };
   };
 }
