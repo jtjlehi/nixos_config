@@ -26,10 +26,7 @@
   };
 
   # Set your time zone.
-  time.timeZone = "US/Denver";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  time.timeZone = "America/Denver";
 
   security.polkit.enable = true;
   programs.sway.enable = true;
