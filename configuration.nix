@@ -50,6 +50,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    gh
     ripgrep
     nushell
     zsh
