@@ -8,6 +8,7 @@
   imports = [
     ./fonts.nix
     ./window-manager
+    ./shell
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -28,16 +29,18 @@
     compilers = [zig];
     lang-servers = [
       lua-language-server
-      nil
-      alejandra
+      nil # nix language server
+      alejandra # auto-formatter for nix
     ];
   in
     [
       firefox
       neovim
+      signal-desktop
     ]
     ++ compilers
     ++ lang-servers;
+  programs.zellij.enable = true;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -70,9 +73,6 @@
   #
   #  /etc/profiles/per-user/yajj/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
 
   home.stateVersion = "23.11"; # Please read the comment before changing.
 

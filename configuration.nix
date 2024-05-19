@@ -24,6 +24,8 @@
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
   };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   # Set your time zone.
   time.timeZone = "America/Denver";
@@ -49,6 +51,8 @@
   environment.systemPackages = with pkgs; [
     git
     ripgrep
+    nushell
+    zsh
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
