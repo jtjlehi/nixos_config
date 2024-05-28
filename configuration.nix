@@ -63,6 +63,20 @@
     isNormalUser = true;
     extraGroups = ["wheel" "network"];
   };
+  security.sudo.configFile = ''
+    Defaults !env_reset
+  '';
+  security.sudo.extraRules = [
+    {
+      groups = ["wheel"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = ["NOPASSWD" "SETENV"];
+        }
+      ];
+    }
+  ];
 
   environment.systemPackages = with pkgs; [
     git
