@@ -6,30 +6,46 @@
   lib,
   pkgs,
   apple-silicon,
+  options,
   ...
 }: {
-  nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
-  };
-  imports = [
-    ./asahi-config.nix
-  ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "coppermind-nix-asahi";
+  # networking.hostName = "coppermind-nix-asahi";
   networking.wireless.iwd = {
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
   };
+  # networking.networkmanager.enable = true;
+  networking.timeServers = options.networking.timeServers.default;
+  systemd.network.enable = true;
+  networking.useNetworkd = true;
+
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
   # Set your time zone.
   time.timeZone = "America/Denver";
+  services.timesyncd.enable = true;
 
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
   security.polkit.enable = true;
   programs.sway.enable = true;
   xdg.portal.enable = true;
@@ -54,6 +70,7 @@
     ripgrep
     nushell
     zsh
+    neovim
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
