@@ -9,7 +9,7 @@
     mattermost-desktop
     matterhorn
   ];
-  fileSystems."~/bws/fileshare" = {
+  fileSystems."/home/yajj/bws/fileshare" = {
     device = "nfs.bws.sys:/data";
     fsType = "nfs";
   };
