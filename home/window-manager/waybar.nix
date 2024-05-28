@@ -57,27 +57,31 @@
       }
       {
         name = "pulseaudio";
-        config = {
-          #  "scroll-step": 1, // %, can be a float
-          format = "{volume}% {icon} {format_source}";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = " {icon} {format_source}";
-          format-muted = " {format_source}";
-          format-source = "{volume}% ";
-          format-source-muted = "";
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" ""];
-          };
-          # on-click = "amixer set Master toggle";
-          # on-click-right = "pavucontrol";
-        };
       }
+      # {
+      #   name = "pulseaudio";
+      #   config = {
+      #     #  "scroll-step": 1, // %, can be a float
+      #     # format = "{volume}% {icon} {format_source}";
+      #     format = "testing";
+      #     # format-bluetooth = "{volume}% {icon} {format_source}";
+      #     # format-bluetooth-muted = " {icon} {format_source}";
+      #     # format-muted = " {format_source}";
+      #     # format-source = "{volume}% ";
+      #     # format-source-muted = "";
+      #     # format-icons = {
+      #     #   headphone = "";
+      #     #   hands-free = "";
+      #     #   headset = "";
+      #     #   phone = "";
+      #     #   portable = "";
+      #     #   car = "";
+      #     #   default = ["" "" ""];
+      #     # };
+      #     # on-click = "amixer set Master toggle";
+      #     # on-click-right = "pavucontrol";
+      #   };
+      # }
       {
         name = "battery";
         config = {

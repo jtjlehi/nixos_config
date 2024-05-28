@@ -9,11 +9,12 @@
     ./fonts.nix
     ./window-manager
     ./shell
+    ./zellij
   ];
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "yajj";
   home.homeDirectory = "/home/yajj";
+
+  systemd.user.enable = true;
 
   # git
   programs.git = {
@@ -24,22 +25,25 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; let
-    compilers = [zig];
-    lang-servers = [
-      lua-language-server
-      nil # nix language server
-      alejandra # auto-formatter for nix
-    ];
-  in
-    [
-      firefox
-      neovim
-      signal-desktop
-    ]
-    ++ compilers
-    ++ lang-servers;
-  programs.zellij.enable = true;
+  home.packages = with pkgs; [
+    # compilers
+    zig
+    gcc
+    # rust
+    cargo
+    rustc
+    clippy
+    rust-analyzer
+    rustfmt
+    # language servers
+    lua-language-server
+    nil # nix language server
+    alejandra # auto-formatter for nix
+    # desktop stuff
+    firefox
+    neovim
+    signal-desktop
+  ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -55,23 +59,6 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
   };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/yajj/etc/profile.d/hm-session-vars.sh
-  #
 
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
