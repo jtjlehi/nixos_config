@@ -1,0 +1,29 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="editor" split_direction="vertical" {
+        pane edit="src/main.rs" size="60%" borderless=true {
+            focus true
+        }
+        pane size="40%" {
+            pane command="cargo" {
+                args "run"
+                start_suspended true
+            }
+            pane command="cargo" {
+                args "test"
+                start_suspended true
+            }
+        }
+    }
+    tab name="cargo toml" {
+        pane edit="Cargo.toml" borderless=true
+    }
+}
