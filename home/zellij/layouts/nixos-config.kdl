@@ -1,12 +1,12 @@
 layout cwd="$HOME/.dotfiles/nixos"  {
+    pane size=2 borderless=true {
+        plugin location="zellij:status-bar"
+    }
     pane split_direction="vertical" {
         pane focus=true edit="configuration.nix"
-        pane split_direction="horizontal" {
-            pane command="home-manager" {
-                args "switch" "--flake" "."
-                start_suspended true
-            }
-            pane command="sudo" {
+        pane size="40%" split_direction="horizontal" {
+            pane
+            pane size="20%" command="sudo" {
                 args "nixos-rebuild" "switch" "--flake" "."
                 start_suspended true
             }
