@@ -42,6 +42,7 @@
     alejandra # auto-formatter for nix
     # desktop stuff
     firefox
+    brave
     neovim
     signal-desktop
   ];
@@ -65,5 +66,5 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  programs.home-manager.path = lib.mkForce "$HOME/.dotfiles/nixos";
+  programs.home-manager.path = lib.mkForce "/home/yajj/.dotfiles/nixos";
 }
