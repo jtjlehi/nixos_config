@@ -10,6 +10,7 @@
     # Asahi stuff
     apple-silicon.nixosModules.apple-silicon-support
   ];
+  networking.hostName = "coppermind";
   hardware.asahi = {
     withRust = true;
     useExperimentalGPUDriver = true;
