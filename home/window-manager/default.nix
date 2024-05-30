@@ -39,7 +39,7 @@ in {
       }
       {
         label = "suspend";
-        action = "systemctl suspend";
+        action = "${lock-cmd} && systemctl suspend";
         text = "Suspend";
         keybind = "s";
         circular = true;
