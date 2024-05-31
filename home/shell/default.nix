@@ -6,4 +6,9 @@
   home.shellAliases = {
     "la" = "ls -la";
   };
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
+  };
 }
