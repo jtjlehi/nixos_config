@@ -32,6 +32,7 @@
     # compilers
     zig
     gcc
+    ghc
     # rust
     cargo
     rustc
