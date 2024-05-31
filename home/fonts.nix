@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  apple-silicon,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     font-awesome
     monoid
@@ -12,7 +7,7 @@
     enable = true;
     defaultFonts = {
       serif = [];
-      sansSerif = [];
+      sansSerif = ["noto-sans"];
       monospace = ["monoid" "font-awesome"];
       emoji = [];
     };

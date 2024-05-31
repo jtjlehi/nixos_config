@@ -10,6 +10,7 @@
     ./window-manager
     ./shell
     ./zellij
+    ./gtk.nix
   ];
   home.username = "yajj";
   home.homeDirectory = "/home/yajj";
