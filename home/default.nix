@@ -25,6 +25,14 @@
     userEmail = "jtjlehi@gmail.com";
   };
   programs.gh.enable = true;
+  programs.foot.enable = true;
+  programs.foot.settings = {
+    main = let
+      font-size = "9";
+    in {
+      font = "monoid:size=${font-size},font-awesom:size=${font-size}";
+    };
+  };
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
