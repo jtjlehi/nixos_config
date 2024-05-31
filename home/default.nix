@@ -11,6 +11,7 @@
     ./shell
     ./zellij
     ./gtk.nix
+    ./nvim
   ];
   home.username = "yajj";
   home.homeDirectory = "/home/yajj";
@@ -44,7 +45,6 @@
     # desktop stuff
     firefox
     brave
-    neovim
     signal-desktop
   ];
 
