@@ -14,6 +14,8 @@
             lua
             haskell
             nix
+            dhall
+            xml
           ]);
         type = "lua";
         config = ''
@@ -92,7 +94,23 @@
         type = "lua";
         config = "require('Comment').setup()";
       }
-      telescope-nvim
+      telescope-live-grep-args-nvim
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local builtin = require('telescope.builtin')
+          vim.keymap.set('n', 'ff', builtin.find_files)
+          vim.keymap.set('n', 'fe', builtin.diagnostics)
+          vim.keymap.set('n', 'fg', function()
+            require('telescope').extensions.live_grep_args.live_grep_args()
+          end)
+          vim.keymap.set('n', 'fb', builtin.buffers)
+          vim.keymap.set('n', 'f<C-O>', builtin.jumplist)
+          vim.keymap.set('n', 'fd', builtin.lsp_references)
+          vim.keymap.set('n', 'fw', builtin.grep_string)
+        '';
+      }
     ];
   };
 }
