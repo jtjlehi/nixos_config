@@ -29,8 +29,6 @@ dig('gG', 0x0393) -- Gamma (Γ)
 -- NORMAL MODE
 -------------------------------------------------------------------------------
 
--- Toggle nvim-tree
-vim.keymap.set('n', L .. 'n', function() vim.cmd('NvimTreeToggl') end)
 -- Clear Search
 vim.keymap.set('n', L .. 'cs', function() vim.cmd('nohlsearch') end)
 -- Show Errors
