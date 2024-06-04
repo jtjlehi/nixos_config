@@ -13,7 +13,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("K", lsp_buf.hover, "Hover Documentation")
 		map("<leader>r", lsp_buf.rename, "[r]ename")
 		map("<leader>ca", lsp_buf.code_action, "[C]ode [A]ction")
-		map("gd", lsp_buf.declaration, "[G]oto [D]ecleration")
+		map("gD", lsp_buf.declaration, "[G]oto [D]ecleration")
+
+		-- telescope
+		local telescope = require("telescope.builtin")
+
+		map("gd", telescope.lsp_definitions, "[g]oto [d]efinitions")
+		map("fd", telescope.lsp_references, "[f]ind [D]efinitions")
+		map("fs", telescope.lsp_document_symbols, "[f]ind [s]ymbols")
+		map("ft", telescope.lsp_type_definitions, "[f]ind [t]ype definitions")
+		map("fws", telescope.lsp_dynamic_workspace_symbols, "[f]ind [w]orkspace [s]ymbols")
 
 		-- capabilities
 
