@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		map("K", lsp_buf.hover, "Hover Documentation")
 		map("<leader>r", lsp_buf.rename, "[r]ename")
-		map("<leader>ca", lsp_buf.code_action, "[C]ode [A]ction")
+		map("<leader>ca", require("actions-preview").code_actions, "[C]ode [A]ction")
 		map("gD", lsp_buf.declaration, "[G]oto [D]ecleration")
 
 		-- telescope

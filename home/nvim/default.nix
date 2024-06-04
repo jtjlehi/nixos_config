@@ -73,6 +73,7 @@
       # lsp
       nvim-lspconfig
       conform-nvim
+      actions-preview-nvim
       {
         plugin = lsp-zero-nvim;
         type = "lua";
