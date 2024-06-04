@@ -16,6 +16,7 @@
             nix
             dhall
             xml
+            vimdoc
           ]);
         type = "lua";
         config = ''
@@ -60,7 +61,8 @@
       vim-fugitive
       vim-gitgutter
       # lsp
-      lsp-zero-nvim
+      {plugin = lsp-zero-nvim; type = "lua"; config = builtins.readFile ./lsp.lua; }
+
       nvim-lspconfig
       cmp-nvim-lsp
       nvim-cmp
