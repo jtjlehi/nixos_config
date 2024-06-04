@@ -78,11 +78,16 @@
         type = "lua";
         config = builtins.readFile ./lsp.lua;
       }
-      cmp-nvim-lsp
-      nvim-cmp
+      # rust-tools-nvim
+      # haskell-tools-nvim
+      # completions
       luasnip
-      rust-tools-nvim
-      haskell-tools-nvim
+      cmp-nvim-lsp
+      {
+        plugin = nvim-cmp;
+        type = "lua";
+        config = builtins.readFile ./cmp.lua;
+      }
       # folding
       {
         plugin = nvim-ufo;
