@@ -1,4 +1,14 @@
 {pkgs, ...}: {
+  home.packages = with pkgs; [
+    # language servers
+    nil # nix language server
+    lua-language-server
+    rust-analyzer
+    # Formatters
+    alejandra # auto-formatter for nix
+    rustfmt
+    stylua
+  ];
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -61,9 +71,13 @@
       vim-fugitive
       vim-gitgutter
       # lsp
-      {plugin = lsp-zero-nvim; type = "lua"; config = builtins.readFile ./lsp.lua; }
-
       nvim-lspconfig
+      conform-nvim
+      {
+        plugin = lsp-zero-nvim;
+        type = "lua";
+        config = builtins.readFile ./lsp.lua;
+      }
       cmp-nvim-lsp
       nvim-cmp
       luasnip

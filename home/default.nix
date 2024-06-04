@@ -45,12 +45,6 @@
     cargo
     rustc
     clippy
-    rust-analyzer
-    rustfmt
-    # language servers
-    lua-language-server
-    nil # nix language server
-    alejandra # auto-formatter for nix
     # desktop stuff
     firefox
     brave
