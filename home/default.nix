@@ -49,6 +49,8 @@
     firefox
     brave
     signal-desktop
+    # cli tools
+    fzf
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
