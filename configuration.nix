@@ -80,6 +80,10 @@
     neovim
     pulseaudio
   ];
+  documentation.man = {
+    enable = true;
+    generateCaches = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
