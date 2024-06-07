@@ -21,30 +21,6 @@
       inherit plugin config;
       type = "lua";
     };
-    # {
-    #     plugin = lualine-nvim;
-    #     type = "lua";
-    #     config = ''
-    #       require "lualine".setup {
-    #           options = {
-    #               theme = "auto",
-    #           },
-    #           sections = {
-    #               lualine_c = {},
-    #               lualine_x = { 'filetype' },
-    #               lualine_y = {},
-    #           },
-    #           winbar = {
-    #               lualine_a = { { 'filename', path = 1 } },
-    #               lualine_z = { 'location' },
-    #           },
-    #           inactive_winbar = {
-    #               lualine_a = { { 'filename', path = 1 } },
-    #               lualine_z = { 'location' },
-    #           },
-    #       }
-    #     '';
-    #   }
   in {
     enable = true;
     vimAlias = true;
@@ -57,6 +33,7 @@
         plugin = nvim-treesitter.withPlugins (p:
           with p; [
             bash
+            kdl
             rust
             lua
             haskell
