@@ -1,6 +1,7 @@
 {
   pkgs,
   options,
+  lib,
   ...
 }: {
   imports = [./styling];
@@ -24,7 +25,7 @@
 
   # Set your time zone.
   time.timeZone = "America/Denver";
-  services.timesyncd.enable = true;
+  services.timesyncd.enable = lib.mkForce true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
