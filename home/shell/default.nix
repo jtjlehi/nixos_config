@@ -92,6 +92,15 @@
     '';
   in
     writeShellScriptBin name script;
+  fzf-man = pkgs.writeShellScriptBin "fzf-man" ''
+    if [ $1 ]; then
+      fullPages=$(man -k $1)
+    else
+      fullPages=$(man -k .)
+    fi
+    namePages=$(echo "$fullPages" | sed -r "s/((\w|-)*).*/\1/" | uniq)
+    echo "$namePages" | fzf | man
+  '';
 in {
   programs.bash.enable = true;
   home.sessionVariables = {
@@ -109,5 +118,6 @@ in {
     pull-build
     g-pull
     g-push
+    fzf-man
   ];
 }
