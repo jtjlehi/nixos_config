@@ -14,6 +14,7 @@
       name = "my-plugin";
       src = builtins.fetchGit {
         url = "https://git.sr.ht/~swaits/zellij-nav.nvim";
+        ref = "main";
         rev = "25930804397ef540bd2de62f9897bc2db61f9baa";
       };
     };
