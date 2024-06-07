@@ -9,13 +9,50 @@
     rustfmt
     stylua
   ];
-  programs.neovim = {
+  programs.neovim = let
+    zellij-nav = pkgs.vimUtils.buildVimPlugin {
+      name = "my-plugin";
+      src = builtins.fetchGit {
+        url = "https://git.sr.ht/~swaits/zellij-nav.nvim";
+        rev = "25930804397ef540bd2de62f9897bc2db61f9baa";
+      };
+    };
+    luaPlugin = plugin: config: {
+      inherit plugin config;
+      type = "lua";
+    };
+    # {
+    #     plugin = lualine-nvim;
+    #     type = "lua";
+    #     config = ''
+    #       require "lualine".setup {
+    #           options = {
+    #               theme = "auto",
+    #           },
+    #           sections = {
+    #               lualine_c = {},
+    #               lualine_x = { 'filetype' },
+    #               lualine_y = {},
+    #           },
+    #           winbar = {
+    #               lualine_a = { { 'filename', path = 1 } },
+    #               lualine_z = { 'location' },
+    #           },
+    #           inactive_winbar = {
+    #               lualine_a = { { 'filename', path = 1 } },
+    #               lualine_z = { 'location' },
+    #           },
+    #       }
+    #     '';
+    #   }
+  in {
     enable = true;
     vimAlias = true;
     viAlias = true;
     defaultEditor = true;
     extraLuaConfig = builtins.readFile ./init.lua;
     plugins = with pkgs.vimPlugins; [
+      zellij-nav
       {
         plugin = nvim-treesitter.withPlugins (p:
           with p; [
@@ -37,6 +74,15 @@
           }
         '';
       }
+      (luaPlugin zellij-nav ''
+        require("zellij-nav").setup()
+        local zellij = require("zellij-nav")
+        local map = vim.keymap.set
+        map("n", "<c-h>", zellij.left, { desc = "navigate left" })
+        map("n", "<c-j>", zellij.down, { desc = "navigate down" })
+        map("n", "<c-k>", zellij.up, { desc = "navigate up" })
+        map("n", "<c-l>", zellij.right, { desc = "navigate right" })
+      '')
       # colorscheme
       gruvbox-nvim
       # appearance
