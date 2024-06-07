@@ -53,7 +53,7 @@
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.mutableUsers = false;
   users.users.yajj = {
     isNormalUser = true;
     extraGroups = ["wheel" "network"];

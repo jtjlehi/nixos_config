@@ -53,6 +53,7 @@
       };
   in {
     nixosConfigurations.pewtermind = host "x86_64-linux" ./pewtermind.nix;
+    nixosConfigurations.aluminiummind = host "x86_64-linux" ./aluminiummind.nix;
     nixosConfigurations.coppermind = host "aarch64-linux" ./coppermind.nix;
   };
 }
