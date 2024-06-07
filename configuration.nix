@@ -55,6 +55,7 @@
   users.users.yajj = {
     isNormalUser = true;
     extraGroups = ["wheel" "network"];
+    hashedPassword = "$6$11223344$d3FPnBQ56DuWIYjVYfYxOiemLqPobvGAdfft6CBoDQ.i83av5TaQyr.ad6HyVnvPizZVzW2uuj6jVQLPYHaLC1";
   };
   security.sudo.configFile = ''
     Defaults !env_reset
