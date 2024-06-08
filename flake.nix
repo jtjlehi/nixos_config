@@ -11,6 +11,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -21,7 +25,14 @@
     host = system: host_config:
       nixpkgs.lib.nixosSystem {
         inherit system;
-        pkgs = import nixpkgs {inherit system;};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = with inputs; [
+            (final: prev: {
+              zjstatus = zjstatus.packages.${prev.system}.default;
+            })
+          ];
+        };
         specialArgs = inputs;
         modules = [
           ./configuration.nix
