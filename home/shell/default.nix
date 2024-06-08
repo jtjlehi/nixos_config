@@ -127,6 +127,11 @@ in {
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    settings = {};
+  };
   home.packages = with pkgs; [
     # cli tools
     fzf
