@@ -2,10 +2,6 @@ theme "gruvbox-dark"
 
 keybinds clear-defaults=true {
     shared_except "locked" {
-        // bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Alt n" { NewPane; }
-        bind "Alt i" { MoveTab "Left"; }
-        bind "Alt o" { MoveTab "Right"; }
         bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
         bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
         bind "Alt j" "Alt Down" { MoveFocus "Down"; }
@@ -30,16 +26,25 @@ keybinds clear-defaults=true {
         bind "m" { SwitchToMode "Move"; }
         bind "/" { SwitchToMode "Search"; }
         bind "s" { SwitchToMode "Session"; }
-        bind "q" { Quit; }
         bind "n" { GoToNextTab; SwitchToMode "Normal"; }
-        // other
-        bind "[" { SwitchToMode "Scroll"; }
+        bind "S" { SwitchToMode "Scroll"; }
+        // panes
+        bind "x" { CloseFocus; }
+        bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+        bind "n" { NewPane; SwitchToMode "Normal"; }
+        // move
         bind "Left" "h" { MoveFocusOrTab "Left"; }
         bind "Right" "l" { MoveFocusOrTab "Right"; }
         bind "Down" "j" { MoveFocus "Down"; }
         bind "Up" "k" { MoveFocus "Up"; }
+        // actions
+        bind "q" { Quit; }
+        bind "h" {
+            Run "zellij" "run" "--height=80%" "-x=10%" "-f" "--width=80%" "-c" "-y=10%" "--" "fman";
+            SwitchToMode "Normal";
+        }
+        // other
         bind "Space" { NextSwapLayout; }
-        bind "e" { CloseFocus; }
     }
     locked {
         bind "Ctrl g" { SwitchToMode "Normal"; }
@@ -126,6 +131,7 @@ keybinds clear-defaults=true {
     search {
         bind "Ctrl s" { SwitchToMode "Normal"; }
         bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
         bind "j" "Down" { ScrollDown; }
         bind "k" "Up" { ScrollUp; }
         bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
