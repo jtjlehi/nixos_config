@@ -91,16 +91,27 @@
       ${body}
     '';
   in
-    writeShellScriptBin name script;
-  fzf-man = pkgs.writeShellScriptBin "fzf-man" ''
-    if [ $1 ]; then
-      fullPages=$(man -k $1)
-    else
+    pkgs.writeShellScriptBin name script;
+  fzf-man = pkgs.writeShellApplication {
+    name = "fman";
+    runtimeInputs = with pkgs; [ripgrep fzf];
+    text = ''
+      if man "$@" 2> /dev/null; then
+        exit 0
+      fi
       fullPages=$(man -k .)
-    fi
-    namePages=$(echo "$fullPages" | sed -r "s/((\w|-)*).*/\1/" | uniq)
-    echo "$namePages" | fzf | man
-  '';
+      for filter; do
+        fullPages=$(echo "$fullPages" | rg "$filter")
+      done
+      names=$(echo "$fullPages" | sd "(\S*).*" "\$1")
+      choice=$(echo "$names" | uniq | fzf)
+      pageNumber=$(echo "$fullPages" |
+        rg "^$choice\s" |
+        sd ".*\((\d*)\).*" "\$1" |
+        fzf -1)
+      man "$pageNumber" "$choice"
+    '';
+  };
 in {
   programs.bash.enable = true;
   home.sessionVariables = {
@@ -108,13 +119,21 @@ in {
   };
   home.shellAliases = {
     "la" = "ls -la";
+    # as far as I can tell using this alias allows me to use tab completion from man as well
+    "man" = "fman";
   };
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
-  home.packages = [
+  home.packages = with pkgs; [
+    # cli tools
+    fzf
+    ripgrep
+    sd
+    fd
+    # scripts
     pull-build
     g-pull
     g-push
