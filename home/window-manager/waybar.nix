@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   home.packages = [pkgs.waybar];
-  home.file.".config/waybar/style.css".source = ./waybar.css;
   programs.waybar = let
     inherit (builtins) catAttrs;
     left = [

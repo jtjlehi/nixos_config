@@ -15,11 +15,16 @@
       url = "github:dj95/zjstatus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     home-manager,
+    stylix,
     ...
   } @ inputs: let
     host = system: host_config:
@@ -43,6 +48,7 @@
             home-manager.useUserPackages = true;
             home-manager.users."yajj" = import ./home;
           }
+          stylix.nixosModules.stylix
         ];
       };
   in {

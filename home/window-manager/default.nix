@@ -98,9 +98,6 @@ in {
           click_method = "button_areas";
         };
       };
-      output = {
-        "*".bg = "${../../photos/mount-timp-wallpaper.jpg} fill";
-      };
       bars = [{command = "waybar";}];
       window = {
         hideEdgeBorders = "smart";
