@@ -4,6 +4,7 @@
     nil # nix language server
     lua-language-server
     rust-analyzer
+    dhall-lsp-server
     # Formatters
     alejandra # auto-formatter for nix
     rustfmt
@@ -111,7 +112,36 @@
       {
         plugin = nvim-cmp;
         type = "lua";
-        config = builtins.readFile ./cmp.lua;
+        config = let
+          extras =
+            builtins.map ({
+              pkg,
+              filetype,
+              pat,
+            }: ''
+              vim.api.nvim_create_autocmd({"BufEnter"}, {
+                pattern = { "*.${pat}" },
+                callback = function()
+                  vim.lsp.start({
+                    name = '${pkg.pname}',
+                    cmd = { '${pkg}/bin/${pkg.pname}' }
+                  })
+                end
+              })
+            '') (with pkgs; [
+              {
+                pkg = nil;
+                filetype = "nix";
+                pat = "nix";
+              }
+              {
+                pkg = dhall-lsp-server;
+                filetype = "dhall";
+                pat = "dhall";
+              }
+            ]);
+        in
+          (builtins.readFile ./cmp.lua) + (builtins.concatStringsSep "\n" extras);
       }
       # folding
       {

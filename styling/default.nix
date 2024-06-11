@@ -7,7 +7,7 @@
     polarity = "dark";
     fonts = {
       sizes = {
-        terminal = 9;
+        terminal = 10;
       };
       monospace = {
         package = pkgs.nerdfonts;
