@@ -9,6 +9,7 @@ layout {
         }
     }
     tab name="editor" split_direction="vertical" {
+        focus true
         pane edit="src/main.rs" size="60%" {
             focus true
         }
@@ -26,8 +27,8 @@ layout {
     tab name="cargo toml" {
         pane edit="Cargo.toml"
     }
-    tab name="term"
-    tab name="file" {
+    tab name="term" {
+        pane
         pane command="xplr"
     }
 }
