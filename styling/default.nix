@@ -1,8 +1,9 @@
 {pkgs, ...}: {
-  stylix = {
-    # image = ../photos/mount-timp-wallpaper.jpg;
+  stylix = let
+    theme = "darktooth";
+  in {
     image = ../photos/blue-mistborn.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/darktooth.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/${theme}.yaml";
     polarity = "dark";
     fonts = {
       sizes = {
