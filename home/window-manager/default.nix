@@ -88,6 +88,7 @@ in {
         lib.mkOptionDefault {
           "${modifier}+o" = "exec ${pkgs.wlogout}/bin/wlogout";
         };
+      menu = "wofi --show run";
       input = {
         "*" = {
           xkb_options = "ctrl:swapcaps";
