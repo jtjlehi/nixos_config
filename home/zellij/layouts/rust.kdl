@@ -27,4 +27,7 @@ layout {
         pane edit="Cargo.toml"
     }
     tab name="term"
+    tab name="file" {
+        pane command="xplr"
+    }
 }
