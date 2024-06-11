@@ -37,10 +37,11 @@
     cargo
     rustc
     clippy
-    # desktop stuff
+    # desktop/tui stuff
     firefox
     brave
     signal-desktop
+    xplr
   ];
 
   stylix.autoEnable = true;
