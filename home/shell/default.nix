@@ -3,13 +3,7 @@
   config,
   lib,
   ...
-}: let
-  writeFzfGitScript = {
-    branchOpt,
-    sedPat,
-    gitCmd,
-  }: "git branch ${branchOpt} | sed -r '${sedPat}' | fzf | xargs git ${gitCmd}";
-in {
+}: {
   options = with lib;
   with types; {
     scripts = mkOption {
