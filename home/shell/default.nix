@@ -4,144 +4,121 @@
   lib,
   ...
 }: let
-  inherit (pkgs) writeShellScriptBin;
-  inherit (lib.strings) concatMapStringsSep stringLength;
-  gitBin = "${pkgs.git}/bin/git";
-  writeFzfScript = name: choices: cmd:
-    writeShellScriptBin name ''
-      CHOICE=$(${choices} | ${pkgs.fzf}/bin/fzf)
-      echo ${name} $CHOICE
-      ${cmd} $CHOICE
-    '';
-  writeFzfGitScript = name: {
+  writeFzfGitScript = {
     branchOpt,
-    sedPat ? null,
+    sedPat,
     gitCmd,
-  }: let
-    sedCmd =
-      if builtins.isNull sedPat
-      then ""
-      else "| sed -r '${sedPat}'";
-  in
-    writeFzfScript name "${gitBin} branch ${branchOpt} ${sedCmd}" "${gitBin} ${gitCmd}";
-  g-pull = writeFzfGitScript "g-pull" {
-    branchOpt = "-r";
-    sedPat = ''s/\s*origin\/((\w[^\s])*).*/\1/'';
-    gitCmd = "pull origin";
-  };
-
-  g-push = writeFzfGitScript "g-push" {
-    branchOpt = "-l";
-    sedPat = "s/^..//";
-    gitCmd = "push origin";
-  };
-  pull-build = pkgs.writeShellScriptBin "pull-build" ''
-    cd ${config.home.homeDirectory}/.dotfiles/nixos
-    OUT=$(${g-pull}/bin/g-pull)
-    echo $OUT
-    if [[ $OUT == *"Already up to date."* ]];
-    then
-      echo "Nothing to do"
-    else
-      sudo nixos-rebuild switch --flake .
-    fi
-  '';
-  writeFlagScript = name: {
-    subCommands ? [],
-    flags ? [],
-    body ? "",
-  }: let
-    parsedFlags =
-      concatMapStringsSep "\n" (opts: ''
-        ${concatMapStringsSep "|" (opt:
-          (
-            if stringLength opt == 1
-            then "-"
-            else "--"
-          )
-          + opt)
-        opts})
-        ${builtins.head opts}=$2
-        shift;;
-      '')
-      flags;
-    parseSub = concatMapStringsSep "\n" ({subName, ...}: "${subName}) ${subName}=true;;") subCommands;
-    handleSub =
-      concatMapStringsSep "\n" (
-        {
-          subName,
-          subBody,
-        }: ''
-          if [[ ''$${subName} ]]; then
-            ${subBody}
-          fi
-        ''
-      )
-      subCommands;
-    script = ''
-      while [ $# -gt 0 ]
-      do
-        case $1 in
-        ${parsedFlags}
-        ${parseSub}
-        esac
-        shift
-      done
-      ${handleSub}
-      ${body}
-    '';
-  in
-    pkgs.writeShellScriptBin name script;
-  fzf-man = pkgs.writeShellApplication {
-    name = "fman";
-    runtimeInputs = with pkgs; [ripgrep fzf];
-    text = ''
-      if man "$@" 2> /dev/null; then
-        exit 0
-      fi
-      fullPages=$(man -k .)
-      for filter; do
-        fullPages=$(echo "$fullPages" | rg "$filter")
-      done
-      names=$(echo "$fullPages" | sd "(\S*).*" "\$1")
-      choice=$(echo "$names" | uniq | fzf)
-      pageNumber=$(echo "$fullPages" |
-        rg "^$choice\s" |
-        sd ".*\((\d*)\).*" "\$1" |
-        fzf -1)
-      man "$pageNumber" "$choice"
-    '';
-  };
+  }: "git branch ${branchOpt} | sed -r '${sedPat}' | fzf | xargs git ${gitCmd}";
 in {
-  programs.bash.enable = true;
-  home.sessionVariables = {
-    EDITOR = "nvim";
+  options = with lib;
+  with types; {
+    scripts = mkOption {
+      description = "a list of all the script binary packages you use";
+      type = listOf (submodule {
+        options.name = mkOption {
+          description = "the name of the script";
+          type = str;
+        };
+        options.text = mkOption {
+          description = "the actual content of the shell you're writing";
+          type = str;
+        };
+        options.runtimeInputs = mkOption {
+          description = "a list of any extra packages used by the script";
+          type = listOf package;
+          default = [];
+        };
+      });
+    };
+    scriptApps = mkOption {
+      type = attrsOf package;
+      description = "a list of all the actual binary applications";
+    };
   };
-  home.shellAliases = {
-    "la" = "ls -la";
-    # as far as I can tell using this alias allows me to use tab completion from man as well
-    "man" = "fman";
+  config = {
+    programs.bash.enable = true;
+    scriptApps = lib.mkForce (
+      builtins.listToAttrs (map ({name, ...} @ app: {
+          inherit name;
+          value = pkgs.writeShellApplication app;
+        })
+        config.scripts)
+    );
+
+    scripts = [
+      {
+        name = "pull-build";
+        runtimeInputs = [config.scriptApps.g-pull];
+        text = ''
+          cd ${config.home.homeDirectory}/.dotfiles/nixos
+          OUT=$(g-pull)
+          echo "$OUT"
+          if [[ "$OUT" == *"Already up to date."* ]]; then
+            echo "Nothing to do"
+          else
+            sudo nixos-rebuild switch --flake .
+          fi
+        '';
+      }
+      {
+        name = "g-pull";
+        text = ''
+          git branch -r |
+            sed -r 's/\s*origin\/((\w[^\s])*).*/\1/' |
+            fzf |
+            xargs git pull origin
+        '';
+      }
+      {
+        name = "g-push";
+        text = ''git branch -l | sed -r "s/^..//" | fzf | xargs git push origin'';
+      }
+      {
+        name = "fman";
+        runtimeInputs = with pkgs; [ripgrep fzf];
+        text = ''
+          if man "$@" 2> /dev/null; then
+            exit 0
+          fi
+          fullPages=$(man -k .)
+          for filter; do
+            fullPages=$(echo "$fullPages" | rg "$filter")
+          done
+          names=$(echo "$fullPages" | sd "(\S*).*" "\$1")
+          choice=$(echo "$names" | uniq | fzf)
+          pageNumber=$(echo "$fullPages" |
+            rg "^$choice\s" |
+            sd ".*\((\d*)\).*" "\$1" |
+            fzf -1)
+          man "$pageNumber" "$choice"
+        '';
+      }
+    ];
+    home.sessionVariables = {
+      EDITOR = "nvim";
+    };
+    home.shellAliases = {
+      "la" = "ls -la";
+      # as far as I can tell using this alias allows me to use tab completion from man as well
+      "man" = "fman";
+    };
+    programs.direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      nix-direnv.enable = true;
+    };
+    programs.starship = {
+      enable = true;
+      enableBashIntegration = true;
+      settings = {};
+    };
+    home.packages = with pkgs;
+      [
+        fzf
+        ripgrep
+        sd
+        fd
+      ]
+      ++ builtins.attrValues config.scriptApps;
   };
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-    nix-direnv.enable = true;
-  };
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-    settings = {};
-  };
-  home.packages = with pkgs; [
-    # cli tools
-    fzf
-    ripgrep
-    sd
-    fd
-    # scripts
-    pull-build
-    g-pull
-    g-push
-    fzf-man
-  ];
 }

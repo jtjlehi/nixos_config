@@ -76,19 +76,37 @@ in {
       }
     ];
   };
-  wayland.windowManager.sway = {
+
+  scripts = [
+    {
+      name = "edit-config";
+      runtimeInputs = with pkgs; [zellij];
+      text = "zellij --layout nixos-config";
+    }
+  ];
+  wayland.windowManager.sway = let
+    inherit (builtins) listToAttrs attrNames;
+    cfg = config.wayland.windowManager.sway.config;
+    tofi-exec = exec: ''${pkgs.tofi}/bin/tofi-run | xargs swaymsg exec ${exec} --'';
+    bind-execs = bindings:
+      listToAttrs (map (name: {
+          name = "${cfg.modifier}+${name}";
+          value = "exec ${bindings.${name}}";
+        })
+        (attrNames bindings));
+  in {
     enable = true;
     extraConfig = builtins.readFile ./sway;
     systemd.enable = true;
     config = {
       modifier = "Mod4";
-      keybindings = let
-        modifier = config.wayland.windowManager.sway.config.modifier;
-      in
-        lib.mkOptionDefault {
-          "${modifier}+o" = "exec ${pkgs.wlogout}/bin/wlogout";
-        };
-      menu = "wofi --show run";
+      terminal = "${pkgs.foot}/bin/foot"; # default but I wanted to be explicit
+      menu = tofi-exec "";
+      keybindings = lib.mkOptionDefault (bind-execs {
+        o = "${pkgs.wlogout}/bin/wlogout";
+        "Shift+Return" = tofi-exec cfg.terminal;
+        c = "${cfg.terminal} edit-config";
+      });
       input = {
         "*" = {
           xkb_options = "ctrl:swapcaps";
