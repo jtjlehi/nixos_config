@@ -27,7 +27,7 @@
     stylix,
     ...
   } @ inputs: let
-    host = system: host_config:
+    host = system: name:
       nixpkgs.lib.nixosSystem {
         inherit system;
         pkgs = import nixpkgs {
@@ -41,19 +41,22 @@
         specialArgs = inputs;
         modules = [
           ./configuration.nix
-          host_config
+          (./. + "/${name}.nix")
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users."yajj" = import ./home;
           }
+          {
+            networking.hostName = name;
+          }
           stylix.nixosModules.stylix
         ];
       };
   in {
-    nixosConfigurations.pewtermind = host "x86_64-linux" ./pewtermind.nix;
-    nixosConfigurations.aluminiummind = host "x86_64-linux" ./aluminiummind.nix;
-    nixosConfigurations.coppermind = host "aarch64-linux" ./coppermind.nix;
+    nixosConfigurations.pewtermind = host "x86_64-linux" "pewtermind";
+    nixosConfigurations.aluminiummind = host "x86_64-linux" "aluminiummind";
+    nixosConfigurations.coppermind = host "aarch64-linux" "coppermind";
   };
 }

@@ -4,7 +4,6 @@
   services.timesyncd.extraConfig = ''
     FallbackNTP=10.66.87.1
   '';
-  networking.hostName = "pewtermind";
   environment.systemPackages = with pkgs; [
     mattermost-desktop
     matterhorn
