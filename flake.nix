@@ -27,7 +27,23 @@
     stylix,
     ...
   } @ inputs: let
-    host = system: name:
+    mkSharedDir = config: path: {
+      source = ''"$HOME"/${path}'';
+      target = "${config.users.users.yajj.home}/${path}";
+    };
+    vmModule = vm: {config, ...}:
+      if vm
+      then {
+        virtualisation.vmVariant.virtualisation.sharedDirectories = {
+          nixos-config = mkSharedDir config ".dotfiles/nixos";
+        };
+      }
+      else {};
+
+    host = system: {
+      name,
+      vm ? false,
+    }:
       nixpkgs.lib.nixosSystem {
         inherit system;
         pkgs = import nixpkgs {
@@ -38,7 +54,15 @@
             })
           ];
         };
-        specialArgs = inputs;
+        specialArgs =
+          inputs
+          // (
+            if vm
+            then {
+              inherit mkSharedDir;
+            }
+            else {}
+          );
         modules = [
           ./configuration.nix
           (./. + "/${name}.nix")
@@ -52,11 +76,17 @@
             networking.hostName = name;
           }
           stylix.nixosModules.stylix
+          (vmModule vm)
         ];
       };
+    aarchHost = host "aarch64-linux";
+    x86Host = host "x86_64-linux";
   in {
-    nixosConfigurations.pewtermind = host "x86_64-linux" "pewtermind";
-    nixosConfigurations.aluminiummind = host "x86_64-linux" "aluminiummind";
-    nixosConfigurations.coppermind = host "aarch64-linux" "coppermind";
+    nixosConfigurations.pewtermind = x86Host {name = "pewtermind";};
+    nixosConfigurations.aluminiummind = x86Host {
+      name = "aluminiummind";
+      vm = true;
+    };
+    nixosConfigurations.coppermind = aarchHost {name = "coppermind";};
   };
 }
