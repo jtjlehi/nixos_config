@@ -84,6 +84,7 @@ in {
       text = "zellij --layout nixos-config";
     }
   ];
+  programs.foot.enable = true;
   wayland.windowManager.sway = let
     inherit (builtins) listToAttrs attrNames;
     cfg = config.wayland.windowManager.sway.config;

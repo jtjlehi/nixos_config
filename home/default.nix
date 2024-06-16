@@ -47,7 +47,6 @@
     rustc
     clippy
     # desktop/tui stuff
-    firefox
     brave
     signal-desktop
     xplr
