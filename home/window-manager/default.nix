@@ -84,7 +84,7 @@ in {
       text = "zellij --layout nixos-config";
     }
   ];
-  programs.foot.enable = true;
+  programs.alacritty.enable = true;
   wayland.windowManager.sway = let
     inherit (builtins) listToAttrs attrNames;
     cfg = config.wayland.windowManager.sway.config;
@@ -101,12 +101,12 @@ in {
     systemd.enable = true;
     config = {
       modifier = "Mod4";
-      terminal = "${pkgs.foot}/bin/foot"; # default but I wanted to be explicit
+      terminal = "${pkgs.alacritty}/bin/alacritty";
       menu = tofi-exec "";
       keybindings = lib.mkOptionDefault (bind-execs {
         o = "${pkgs.wlogout}/bin/wlogout";
         "Shift+Return" = tofi-exec cfg.terminal;
-        c = "${cfg.terminal} edit-config";
+        c = "${cfg.terminal} -e edit-config";
       });
       input = {
         "*" = {
