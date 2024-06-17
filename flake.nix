@@ -47,10 +47,12 @@
     host = system: {
       name,
       vm ? false,
+      extraModules ? [],
     }:
       nixpkgs.lib.nixosSystem {
         inherit system;
         pkgs = import nixpkgs {
+          config.allowUnfree = true;
           inherit system;
           overlays = with inputs; [
             (final: prev: {
@@ -67,26 +69,31 @@
             }
             else {}
           );
-        modules = [
-          ./configuration.nix
-          (./. + "/${name}.nix")
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."yajj" = import ./home;
-          }
-          {
-            networking.hostName = name;
-          }
-          stylix.nixosModules.stylix
-          (vmModule vm)
-        ];
+        modules =
+          [
+            ./configuration.nix
+            (./. + "/${name}.nix")
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users."yajj" = import ./home;
+            }
+            {
+              networking.hostName = name;
+            }
+            stylix.nixosModules.stylix
+            (vmModule vm)
+          ]
+          ++ extraModules;
       };
     aarchHost = host "aarch64-linux";
     x86Host = host "x86_64-linux";
   in {
-    nixosConfigurations.ironmind = x86Host {name = "ironmind";};
+    nixosConfigurations.ironmind = x86Host {
+      name = "ironmind";
+      extraModules = [inputs.kolide-launcher.nixosModules.kolide-launcher];
+    };
     nixosConfigurations.pewtermind = x86Host {name = "pewtermind";};
     nixosConfigurations.aluminiummind = x86Host {
       name = "aluminiummind";

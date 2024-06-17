@@ -280,6 +280,27 @@
         "type": "github"
       }
     },
+    "kolide-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1718201372,
+        "narHash": "sha256-4MmbTIkSRtlVq5dWa6+V0pwJ0aE2xfQ3WF25gbtmvqY=",
+        "owner": "kolide",
+        "repo": "nix-agent",
+        "rev": "ff6ba824dee45ddac88ed22375c0844bbe021729",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kolide",
+        "ref": "main",
+        "repo": "nix-agent",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1717974879,
@@ -300,6 +321,7 @@
       "inputs": {
         "apple-silicon": "apple-silicon",
         "home-manager": "home-manager",
+        "kolide-launcher": "kolide-launcher",
         "nixpkgs": "nixpkgs",
         "stylix": "stylix",
         "zjstatus": "zjstatus"
