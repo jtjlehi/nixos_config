@@ -280,27 +280,6 @@
         "type": "github"
       }
     },
-    "kolide-launcher": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1718201372,
-        "narHash": "sha256-4MmbTIkSRtlVq5dWa6+V0pwJ0aE2xfQ3WF25gbtmvqY=",
-        "owner": "kolide",
-        "repo": "nix-agent",
-        "rev": "ff6ba824dee45ddac88ed22375c0844bbe021729",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kolide",
-        "ref": "main",
-        "repo": "nix-agent",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1717974879,
@@ -321,8 +300,8 @@
       "inputs": {
         "apple-silicon": "apple-silicon",
         "home-manager": "home-manager",
-        "kolide-launcher": "kolide-launcher",
         "nixpkgs": "nixpkgs",
+        "security-flake": "security-flake",
         "stylix": "stylix",
         "zjstatus": "zjstatus"
       }
@@ -366,6 +345,27 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "security-flake": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1718035381,
+        "narHash": "sha256-DCB6s8ECy2+WAOoHVpxPwge63k/rnnTw9JygqufQ82Y=",
+        "ref": "main",
+        "rev": "d6c6ff315125ada4b31937b64dead3529dd49841",
+        "revCount": 18,
+        "type": "git",
+        "url": "ssh://git@ghe.anduril.dev/infosec/security-flake"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://git@ghe.anduril.dev/infosec/security-flake"
       }
     },
     "stylix": {

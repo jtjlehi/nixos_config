@@ -19,8 +19,8 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kolide-launcher = {
-      url = "github:/kolide/nix-agent/main";
+    security-flake = {
+      url = "git+ssh://git@ghe.anduril.dev/infosec/security-flake?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -92,7 +92,7 @@
   in {
     nixosConfigurations.ironmind = x86Host {
       name = "ironmind";
-      extraModules = [inputs.kolide-launcher.nixosModules.kolide-launcher];
+      extraModules = [inputs.security-flake.nixosModules.default];
     };
     nixosConfigurations.pewtermind = x86Host {name = "pewtermind";};
     nixosConfigurations.aluminiummind = x86Host {
