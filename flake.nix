@@ -82,6 +82,7 @@
     aarchHost = host "aarch64-linux";
     x86Host = host "x86_64-linux";
   in {
+    nixosConfigurations.ironmind = x86Host {name = "ironmind";};
     nixosConfigurations.pewtermind = x86Host {name = "pewtermind";};
     nixosConfigurations.aluminiummind = x86Host {
       name = "aluminiummind";

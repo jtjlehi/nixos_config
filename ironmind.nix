@@ -1,0 +1,3 @@
+{...}: {
+  imports = [hardware/iron.nix];
+}
