@@ -24,6 +24,14 @@
     userEmail = "jtjlehi@gmail.com";
   };
   programs.gh.enable = true;
+  programs.gh.gitCredentialHelper = {
+    enable = true;
+    hosts = [
+      "https://github.com"
+      "https://gist.github.com"
+      "https://ghe.anduril.dev"
+    ];
+  };
   programs.foot.enable = true;
 
   # The home.packages option allows you to install Nix packages into your
