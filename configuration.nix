@@ -59,20 +59,6 @@
     extraGroups = ["wheel" "network"];
     hashedPassword = "$6$11223344$d3FPnBQ56DuWIYjVYfYxOiemLqPobvGAdfft6CBoDQ.i83av5TaQyr.ad6HyVnvPizZVzW2uuj6jVQLPYHaLC1";
   };
-  security.sudo.configFile = ''
-    Defaults !env_reset
-  '';
-  security.sudo.extraRules = [
-    {
-      groups = ["wheel"];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/nixos-rebuild";
-          options = ["NOPASSWD" "SETENV"];
-        }
-      ];
-    }
-  ];
 
   environment.systemPackages = with pkgs; [
     git
