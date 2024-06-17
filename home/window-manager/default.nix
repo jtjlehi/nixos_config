@@ -109,7 +109,7 @@ in {
       });
       input = {
         "*" = {
-          xkb_options = "ctrl:swapcaps";
+          xkb_options = "altwin:swap_lalt_lwin,ctrl:swapcaps";
         };
         "type:touchpad" = {
           dwt = "enabled";
