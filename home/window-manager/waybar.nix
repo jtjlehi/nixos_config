@@ -1,22 +1,25 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   home.packages = [pkgs.waybar];
   programs.waybar = let
     inherit (builtins) catAttrs;
     left = [
       {
-        name = "sway/workspaces";
-        config = {disable-scroll = true;};
+        name = "sway/mode";
+        config = {format = "<span style=\"italic\">{}</span>";};
       }
-      {name = "sway/scratchpad";}
       {name = "sway/window";}
     ];
     center = [
       {
-        name = "sway/mode";
-        config = {format = "<span style=\"italic\">{}</span>";};
+        name = "sway/workspaces";
+        config = {disable-scroll = true;};
       }
-    ];
-    right = [
+      {name = "sway/scratchpad";}
       {
         name = "idle_inhibitor";
         config = {
@@ -27,6 +30,8 @@
           };
         };
       }
+    ];
+    right = [
       {
         name = "network";
         config = {
@@ -126,5 +131,80 @@
         init
         (left ++ center ++ right))
     ];
+    style = lib.mkAfter ''
+
+
+      * {
+          border-radius: 20px;
+      }
+      .modules-center,
+      .modules-right,
+      .modules-left
+      {
+          margin: 5px 0;
+          padding: 0;
+          background-color: @base01;
+      }
+      .modules-left {
+          border-radius: 0 20px 20px 0;
+          padding: 0 20px;
+      }
+      .modules-right {
+          border-radius: 20px 0 0 20px;
+          padding: 0 20px;
+      }
+      #waybar {
+          border-radius: 0;
+      }
+
+      window#waybar, tooltip {
+          background: alpha(@base00, .5);
+          color: @base05;
+      }
+
+      window .modules-center #workspaces button {
+          background-color: transparent;
+          color: @base05;
+      }
+      .modules-center #workspaces button.focused,
+      .modules-center #workspaces button.active {
+          background: @base07;
+          color: @base00;
+      }
+
+      .modules-center #idle_inhibitor {
+          background-color: transparent;
+      }
+      .modules-center #idle_inhibitor.activated {
+          background-color: @base0A;
+          color: @base00;
+      }
+      #battery,
+      #custom-clipboard,
+      #custom-colorpicker,
+      #custom-powerDraw,
+      #bluetooth,
+      #pulseaudio,
+      #network,
+      #disk,
+      #memory,
+      #backlight,
+      #cpu,
+      #temperature,
+      #custom-weather,
+      #idle_inhibitor,
+      #jack,
+      #tray,
+      #window,
+      #workspaces,
+      #idle_inhibitor {
+          padding: 0 17px 0 10px;
+      }
+    '';
+  };
+  stylix.targets.waybar = {
+    enable = true;
+    enableCenterBackColors = true;
+    enableRightBackColors = true;
   };
 }
