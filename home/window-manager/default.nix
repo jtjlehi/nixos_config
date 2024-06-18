@@ -83,6 +83,18 @@ in {
       runtimeInputs = with pkgs; [zellij];
       text = "zellij --layout nixos-config";
     }
+    {
+      name = "clamMode";
+      runtimeInputs = with pkgs; [sway jq];
+      text = ''
+        enabled=$(swaymsg -t get_outputs | jq '.[] | select(.name == "eDP-1") | .active')
+        if [[ $enabled == "true" ]]; then
+            swaymsg 'output eDP-1 disable'
+        else
+            swaymsg 'output eDP-1 enable'
+        fi
+      '';
+    }
   ];
   programs.alacritty.enable = true;
   wayland.windowManager.sway = let
@@ -107,7 +119,12 @@ in {
         o = "${pkgs.wlogout}/bin/wlogout";
         "Shift+Return" = tofi-exec cfg.terminal;
         c = "${cfg.terminal} -e edit-config";
+        t = "${config.scriptApps.clamMode}/bin/clamMode";
       });
+      output."DP-1" = {
+        scale = "1";
+        mode = "3440x1440@98.841hz";
+      };
       input = {
         "*" = {
           xkb_options = "ctrl:swapcaps";
