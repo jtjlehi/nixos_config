@@ -110,6 +110,9 @@ in {
       });
       input = {
         "*" = {
+          xkb_options = "ctrl:swapcaps";
+        };
+        "0:0:Intel_HID_5_button_array" = {
           xkb_options = "altwin:swap_lalt_lwin,ctrl:swapcaps";
         };
         "type:touchpad" = {
