@@ -41,7 +41,6 @@
     zig
     gcc
     ghc
-    gnumake
     # rust
     cargo
     rustc
