@@ -76,6 +76,7 @@ in {
       }
     ];
   };
+  programs.swaylock.enable = true;
 
   scripts = [
     {
