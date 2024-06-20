@@ -43,6 +43,7 @@
             dhall
             xml
             vimdoc
+            cpp
           ]);
         type = "lua";
         config = ''
