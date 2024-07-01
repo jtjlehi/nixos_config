@@ -96,6 +96,13 @@ in {
         fi
       '';
     }
+    {
+      name = "swapAltWin";
+      runtimeInputs = with pkgs; [sway];
+      text = ''
+        swaymsg 'input * xkb_options "altwin:swap_lalt_lwin,ctrl:swapcaps"'
+      '';
+    }
   ];
   programs.alacritty.enable = true;
   wayland.windowManager.sway = let
@@ -108,6 +115,7 @@ in {
           value = "exec ${bindings.${name}}";
         })
         (attrNames bindings));
+    useScript = s: "${config.scriptApps.${s}}/bin/${s}";
   in {
     enable = true;
     extraConfig = builtins.readFile ./sway;
@@ -120,7 +128,8 @@ in {
         o = "${pkgs.wlogout}/bin/wlogout";
         "Shift+Return" = tofi-exec cfg.terminal;
         c = "${cfg.terminal} -e edit-config";
-        t = "${config.scriptApps.clamMode}/bin/clamMode";
+        t = useScript "clamMode";
+        "Shift+s" = useScript "swapAltWin";
       });
       output."DP-1" = {
         scale = "1";
@@ -129,9 +138,6 @@ in {
       input = {
         "*" = {
           xkb_options = "ctrl:swapcaps";
-        };
-        "0:0:Intel_HID_5_button_array" = {
-          xkb_options = "altwin:swap_lalt_lwin,ctrl:swapcaps";
         };
         "type:touchpad" = {
           dwt = "enabled";
