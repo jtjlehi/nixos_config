@@ -81,4 +81,24 @@ in
     xdg.configFile."zellij/layouts/rust.kdl".source = ./layouts/rust.kdl;
     xdg.configFile."zellij/layouts/nixos-config.kdl".source = ./layouts/nixos-config.kdl;
     xdg.configFile."zellij/config.kdl".text = builtins.readFile ./config.kdl;
+
+    scripts = [
+      {
+        name = "clippy-filter";
+        # use the version of cargo and clippy that the project uses
+        runtimeInputs = [pkgs.jq];
+        text =
+          /*
+          bash
+          */
+          ''
+            cargo clippy --message-format json-diagnostic-rendered-ansi -- -W clippy::pedantic | jq "
+                select(. | type == \"object\")
+                | select(has(\"message\"))
+                | select([.message.spans[] | .file_name | contains(\"$1\")] | any)
+                | .message.rendered
+                " --raw-output
+          '';
+      }
+    ];
   }
