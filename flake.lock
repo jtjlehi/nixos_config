@@ -301,6 +301,7 @@
         "apple-silicon": "apple-silicon",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "rust-overlay": "rust-overlay_2",
         "security-flake": "security-flake",
         "stylix": "stylix",
         "zjstatus": "zjstatus"
@@ -323,6 +324,26 @@
       }
     },
     "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1720405186,
+        "narHash": "sha256-7D57KwmTIbsopE/1g8hFeIbVoeJGgU3wfuGYvTlNQG4=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "f0ca58b37ff4179ce4587589c32205764d9b4a4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_3": {
       "inputs": {
         "flake-utils": [
           "zjstatus",
@@ -420,7 +441,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_2"
+        "rust-overlay": "rust-overlay_3"
       },
       "locked": {
         "lastModified": 1718092736,

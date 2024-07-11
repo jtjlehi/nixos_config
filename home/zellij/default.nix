@@ -178,6 +178,7 @@ in
                 bind "Alt ]" { NextSwapLayout; }
                 ${altTabBinds}
                 bind "Ctrl b" { SwitchToMode "Tmux"; }
+
             }
             shared_except "locked" "normal" {
                 bind "Enter" "Esc" { SwitchToMode "Normal"; }
@@ -207,6 +208,12 @@ in
                 bind "q" { Detach; }
                 bind "?" {
                     Run "zellij" "run" "--height=80%" "-x=10%" "-f" "--width=80%" "-c" "-y=10%" "--" "fman";
+                    SwitchToMode "Normal";
+                }
+                bind "y" {
+                    LaunchOrFocusPlugin "file:${zellij-forget}/src/zellij_forgot.wasm" {
+                        floating true
+                    };
                     SwitchToMode "Normal";
                 }
                 // other

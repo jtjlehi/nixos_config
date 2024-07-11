@@ -23,12 +23,17 @@
       url = "git+ssh://git@ghe.anduril.dev/infosec/security-flake?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     home-manager,
     stylix,
+    rust-overlay,
     ...
   } @ inputs: let
     mkSharedDir = config: path: {
@@ -43,6 +48,12 @@
         };
       }
       else {};
+    overlays = with inputs; [
+      (final: prev: {
+        zjstatus = zjstatus.packages.${prev.system}.default;
+      })
+      (import rust-overlay)
+    ];
 
     host = system: {
       name,
@@ -53,12 +64,7 @@
         inherit system;
         pkgs = import nixpkgs {
           config.allowUnfree = true;
-          inherit system;
-          overlays = with inputs; [
-            (final: prev: {
-              zjstatus = zjstatus.packages.${prev.system}.default;
-            })
-          ];
+          inherit system overlays;
         };
         specialArgs =
           inputs
