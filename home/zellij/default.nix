@@ -3,7 +3,49 @@
   config,
   ...
 }: let
+  inherit (builtins) map;
   kdl = _args: _props: children: children // {inherit _props _args;};
+  wasmTarget = "wasm32-wasi";
+  inputs = with pkgs; [
+    (rust-bin.stable.latest.default.override {
+      targets = [wasmTarget];
+    })
+    wasm-pack
+    wasm-bindgen-cli
+  ];
+
+  mkRustWasm = {
+    name,
+    src,
+    cargoHash,
+    nativeBuildInputs ? [],
+  }:
+    pkgs.rustPlatform.buildRustPackage {
+      inherit name src cargoHash;
+
+      nativeBuildInputs = inputs ++ nativeBuildInputs;
+
+      doCheck = false;
+      dontCargoInstall = true;
+
+      buildPhase = ''
+        cargo build --release --target=${wasmTarget}
+
+        echo "Creating out dir"
+        mkdir -p $out/src;
+
+        cp target/${wasmTarget}/release/${name}.wasm $out/src;
+      '';
+    };
+
+  zellij-forget = mkRustWasm {
+    name = "zellij_forgot";
+    src = pkgs.fetchgit {
+      url = "https://github.com/karimould/zellij-forgot.git";
+      hash = "sha256-FOQTV4hCaeeMhODNjDYFYWeO5TvrSNok3nzczjxCQBc=";
+    };
+    cargoHash = "sha256-jJ67ptSVj6NO7fO61HwZyJaxRr3UXAeFOFAa3pYAnhc=";
+  };
 in
   with config.lib.stylix.colors.withHashtag; {
     programs.zellij.enable = true;
@@ -80,7 +122,6 @@ in
       '';
     xdg.configFile."zellij/layouts/rust.kdl".source = ./layouts/rust.kdl;
     xdg.configFile."zellij/layouts/nixos-config.kdl".source = ./layouts/nixos-config.kdl;
-    xdg.configFile."zellij/config.kdl".text = builtins.readFile ./config.kdl;
 
     scripts = [
       {
@@ -101,4 +142,189 @@ in
           '';
       }
     ];
+    xdg.configFile."zellij/config.kdl".text = let
+      inherit (builtins) genList toString concatStringsSep;
+      bindTo = {
+        mkKey,
+        mkAction,
+      }:
+        concatStringsSep "\n" (genList
+          (k: let
+            key = toString (k + 1);
+          in ''bind ${mkKey key} { ${mkAction key}; }'')
+          9);
+      altTabBinds = bindTo {
+        mkKey = k: ''"Alt ${k}"'';
+        mkAction = k: "GoToTab ${k}";
+      };
+      tabBinds = bindTo {
+        mkKey = k: ''"${k}"'';
+        mkAction = k: "GoToTab ${k}; SwitchToMode \"Normal\"";
+      };
+    in
+      /*
+      kdl
+      */
+      ''
+        keybinds clear-defaults=true {
+            shared_except "locked" {
+                bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
+                bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+                bind "Alt j" "Alt Down" { MoveFocus "Down"; }
+                bind "Alt k" "Alt Up" { MoveFocus "Up"; }
+                bind "Alt =" "Alt +" { Resize "Increase"; }
+                bind "Alt -" { Resize "Decrease"; }
+                bind "Alt [" { PreviousSwapLayout; }
+                bind "Alt ]" { NextSwapLayout; }
+                ${altTabBinds}
+                bind "Ctrl b" { SwitchToMode "Tmux"; }
+            }
+            shared_except "locked" "normal" {
+                bind "Enter" "Esc" { SwitchToMode "Normal"; }
+            }
+            // these aren't really tmux bindinds, there just my bindings
+            tmux {
+                bind "Ctrl b" { Write 2; SwitchToMode "Normal"; }
+                // switch to other modes
+                bind "p" { SwitchToMode "Pane"; }
+                bind "t" { SwitchToMode "Tab"; }
+                bind "r" { SwitchToMode "Resize"; }
+                bind "m" { SwitchToMode "Move"; }
+                bind "/" { SwitchToMode "Search"; }
+                bind "s" { SwitchToMode "Session"; }
+                bind "n" { GoToNextTab; SwitchToMode "Normal"; }
+                bind "S" { SwitchToMode "Scroll"; }
+                // panes
+                bind "x" { CloseFocus; SwitchToMode "Normal"; }
+                bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+                bind "n" { NewPane; SwitchToMode "Normal"; }
+                // move
+                bind "Left" "h" { MoveFocusOrTab "Left"; }
+                bind "Right" "l" { MoveFocusOrTab "Right"; }
+                bind "Down" "j" { MoveFocus "Down"; }
+                bind "Up" "k" { MoveFocus "Up"; }
+                // actions
+                bind "q" { Detach; }
+                bind "?" {
+                    Run "zellij" "run" "--height=80%" "-x=10%" "-f" "--width=80%" "-c" "-y=10%" "--" "fman";
+                    SwitchToMode "Normal";
+                }
+                // other
+                bind "Space" { NextSwapLayout; }
+            }
+            shared_among "tab" "tmux" {
+                ${tabBinds}
+                bind "Tab" { ToggleTab; }
+            }
+            locked {
+                bind "Ctrl g" { SwitchToMode "Normal"; }
+            }
+            resize {
+                bind "Ctrl n" { SwitchToMode "Normal"; }
+                bind "h" "Left" { Resize "Increase Left"; }
+                bind "j" "Down" { Resize "Increase Down"; }
+                bind "k" "Up" { Resize "Increase Up"; }
+                bind "l" "Right" { Resize "Increase Right"; }
+                bind "H" { Resize "Decrease Left"; }
+                bind "J" { Resize "Decrease Down"; }
+                bind "K" { Resize "Decrease Up"; }
+                bind "L" { Resize "Decrease Right"; }
+                bind "=" "+" { Resize "Increase"; }
+                bind "-" { Resize "Decrease"; }
+            }
+            pane {
+                bind "Ctrl p" { SwitchToMode "Normal"; }
+                bind "h" "Left" { MoveFocus "Left"; }
+                bind "l" "Right" { MoveFocus "Right"; }
+                bind "j" "Down" { MoveFocus "Down"; }
+                bind "k" "Up" { MoveFocus "Up"; }
+                bind "p" { SwitchFocus; }
+                bind "n" { NewPane; SwitchToMode "Normal"; }
+                bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
+                bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
+                bind "x" { CloseFocus; SwitchToMode "Normal"; }
+                bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+                bind "z" { TogglePaneFrames; SwitchToMode "Normal"; }
+                bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+                bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
+                bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
+            }
+            move {
+                bind "Ctrl h" { SwitchToMode "Normal"; }
+                bind "n" "Tab" { MovePane; }
+                bind "p" { MovePaneBackwards; }
+                bind "h" "Left" { MovePane "Left"; }
+                bind "j" "Down" { MovePane "Down"; }
+                bind "k" "Up" { MovePane "Up"; }
+                bind "l" "Right" { MovePane "Right"; }
+            }
+            tab {
+                bind "Ctrl t" { SwitchToMode "Normal"; }
+                bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+                bind "h" "Left" "Up" "k" { GoToPreviousTab; }
+                bind "l" "Right" "Down" "j" { GoToNextTab; }
+                bind "n" { NewTab; SwitchToMode "Normal"; }
+                bind "x" { CloseTab; SwitchToMode "Normal"; }
+                bind "s" { ToggleActiveSyncTab; SwitchToMode "Normal"; }
+                bind "b" { BreakPane; SwitchToMode "Normal"; }
+                bind "]" { BreakPaneRight; SwitchToMode "Normal"; }
+                bind "[" { BreakPaneLeft; SwitchToMode "Normal"; }
+            }
+            scroll {
+                bind "Ctrl s" { SwitchToMode "Normal"; }
+                bind "e" { EditScrollback; SwitchToMode "Normal"; }
+                bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+                bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
+                bind "j" "Down" { ScrollDown; }
+                bind "k" "Up" { ScrollUp; }
+                bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+                bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+                bind "d" { HalfPageScrollDown; }
+                bind "u" { HalfPageScrollUp; }
+                // uncomment this and adjust key if using copy_on_select=false
+                // bind "Alt c" { Copy; }
+            }
+            search {
+                bind "Ctrl s" { SwitchToMode "Normal"; }
+                bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
+                bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+                bind "j" "Down" { ScrollDown; }
+                bind "k" "Up" { ScrollUp; }
+                bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+                bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+                bind "d" { HalfPageScrollDown; }
+                bind "u" { HalfPageScrollUp; }
+                bind "n" { Search "down"; }
+                bind "p" { Search "up"; }
+                bind "c" { SearchToggleOption "CaseSensitivity"; }
+                bind "w" { SearchToggleOption "Wrap"; }
+                bind "o" { SearchToggleOption "WholeWord"; }
+            }
+            entersearch {
+                bind "Ctrl c" "Esc" { SwitchToMode "Scroll"; }
+                bind "Enter" { SwitchToMode "Search"; }
+            }
+            session {
+                bind "Ctrl o" { SwitchToMode "Normal"; }
+                bind "Ctrl s" { SwitchToMode "Scroll"; }
+                bind "d" { Detach; }
+                bind "w" {
+                    LaunchOrFocusPlugin "session-manager" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Normal"
+                }
+            }
+            // renaming
+            renametab {
+                bind "Ctrl c" { SwitchToMode "Normal"; }
+                bind "Esc" { UndoRenameTab; SwitchToMode "Tab"; }
+            }
+            renamepane {
+                bind "Ctrl c" { SwitchToMode "Normal"; }
+                bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
+            }
+        }
+      '';
   }
