@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home.packages = with pkgs; [
     # language servers
     nil # nix language server
@@ -63,33 +67,38 @@
         map("n", "<c-k>", zellij.up, { desc = "navigate up" })
         map("n", "<c-l>", zellij.right, { desc = "navigate right" })
       '')
-      # colorscheme
-      gruvbox-nvim
       # appearance
       nvim-web-devicons
       {
         plugin = lualine-nvim;
         type = "lua";
-        config = ''
-          require "lualine".setup {
-              options = {
-                  theme = "auto",
-              },
-              sections = {
-                  lualine_c = {},
-                  lualine_x = { 'filetype' },
-                  lualine_y = {},
-              },
-              winbar = {
-                  lualine_a = { { 'filename', path = 1 } },
-                  lualine_z = { 'location' },
-              },
-              inactive_winbar = {
-                  lualine_a = { { 'filename', path = 1 } },
-                  lualine_z = { 'location' },
-              },
-          }
-        '';
+        config =
+          /*
+          lua
+          */
+          ''
+            require "lualine".setup {
+                options = {
+                    theme = "auto",
+                    section_separators = { left = '', right = '' },
+                    component_separators = { left = '|', right = '|' }
+                },
+                sections = {
+                    lualine_c = {},
+                    lualine_x = { 'filetype' },
+                    lualine_y = {},
+                },
+                winbar = {
+                    lualine_a = { { 'filename', path = 1 } },
+                    lualine_z = { 'progress' },
+                    lualine_y = { 'searchcount', 'selectioncount' }
+                },
+                inactive_winbar = {
+                    lualine_b = { { 'filename', path = 1 } },
+                    lualine_x = { 'progress' },
+                },
+            }
+          '';
       }
       rainbow-delimiters-nvim
       indent-blankline-nvim
@@ -114,33 +123,39 @@
         plugin = nvim-cmp;
         type = "lua";
         config = let
-          extras =
-            builtins.map ({
+          extras = builtins.map ({
               pkg,
               filetype,
               pat,
-            }: ''
+              root_dir ? "nil",
+            }:
+            /*
+            lua
+            */
+            ''
               vim.api.nvim_create_autocmd({"BufEnter"}, {
                 pattern = { "*.${pat}" },
                 callback = function()
                   vim.lsp.start({
                     name = '${pkg.pname}',
-                    cmd = { '${pkg}/bin/${pkg.pname}' }
+                    cmd = { '${pkg}/bin/${pkg.pname}' },
+                    root_dir = ${root_dir}
                   })
                 end
               })
             '') (with pkgs; [
-              {
-                pkg = nil;
-                filetype = "nix";
-                pat = "nix";
-              }
-              {
-                pkg = dhall-lsp-server;
-                filetype = "dhall";
-                pat = "dhall";
-              }
-            ]);
+            {
+              pkg = nil;
+              filetype = "nix";
+              pat = "nix";
+              root_dir = "vim.fs.root(0, {'flake.nix'})";
+            }
+            {
+              pkg = dhall-lsp-server;
+              filetype = "dhall";
+              pat = "dhall";
+            }
+          ]);
         in
           (builtins.readFile ./cmp.lua) + (builtins.concatStringsSep "\n" extras);
       }

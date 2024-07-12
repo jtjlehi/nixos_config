@@ -3,9 +3,9 @@
   config,
   ...
 }: let
-  inherit (builtins) map;
   kdl = _args: _props: children: children // {inherit _props _args;};
   wasmTarget = "wasm32-wasi";
+  name = "";
   inputs = with pkgs; [
     (rust-bin.stable.latest.default.override {
       targets = [wasmTarget];
