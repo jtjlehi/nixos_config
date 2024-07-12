@@ -5,7 +5,6 @@
 }: let
   kdl = _args: _props: children: children // {inherit _props _args;};
   wasmTarget = "wasm32-wasi";
-  name = "";
   inputs = with pkgs; [
     (rust-bin.stable.latest.default.override {
       targets = [wasmTarget];
@@ -114,9 +113,6 @@ in
                     }
                 }
                 children
-                pane size=2 borderless=true {
-                    plugin location="zellij:status-bar"
-                }
             }
         }
       '';
@@ -166,6 +162,7 @@ in
       kdl
       */
       ''
+        pane_frames false
         keybinds clear-defaults=true {
             shared_except "locked" {
                 bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
