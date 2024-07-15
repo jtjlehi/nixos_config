@@ -159,7 +159,7 @@
         in
           (builtins.readFile ./cmp.lua) + (builtins.concatStringsSep "\n" extras);
       }
-      # folding
+      # folding/tabs
       {
         plugin = nvim-ufo;
         type = "lua";
@@ -170,6 +170,11 @@
 
           ufo.setup()
         '';
+      }
+      {
+        plugin = guess-indent-nvim;
+        type = "lua";
+        config = ''require('guess-indent').setup {}'';
       }
       # auto completions
       {
