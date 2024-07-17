@@ -10,7 +10,7 @@
     rust-analyzer
     dhall-lsp-server
     # Formatters
-    alejandra # auto-formatter for nix
+    nixpkgs-fmt # auto-formatter for nix
     rustfmt
     stylua
   ];
@@ -39,15 +39,16 @@
         plugin = nvim-treesitter.withPlugins (p:
           with p; [
             bash
-            kdl
-            rust
-            lua
-            haskell
-            nix
-            dhall
-            xml
-            vimdoc
             cpp
+            dhall
+            haskell
+            kdl
+            lua
+            make
+            nix
+            rust
+            vimdoc
+            xml
           ]);
         type = "lua";
         config = ''

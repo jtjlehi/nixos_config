@@ -138,7 +138,7 @@ local conform = require("conform")
 conform.setup({
 	formatters_by_ft = {
 		rust = { "rstfmt" },
-		nix = { "alejandra" },
+		nix = { "nixpkgs-fmt" },
 		lua = { "stylua" },
 	},
 	format_on_save = {
