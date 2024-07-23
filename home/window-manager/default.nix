@@ -9,6 +9,7 @@ in {
   imports = [./waybar.nix];
   home.packages = with pkgs; [
     wl-clipboard
+    sway-contrib.grimshot
   ];
   programs.wofi = {
     enable = true;
@@ -130,6 +131,7 @@ in {
         c = "${cfg.terminal} -e edit-config";
         t = useScript "clamMode";
         "Shift+s" = useScript "swapAltWin";
+        p = "grimshot copy area";
       });
       output."DP-1" = {
         scale = "1";
