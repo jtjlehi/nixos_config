@@ -10,11 +10,7 @@
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
   # the cachix setup is not completely declarative
   nix.settings = let
-    subs = [
-      "https://cache.nixos.org/"
-      "https://anduril-pulsar-nix-cache.cachix.anduril.dev/"
-      "https://anduril-core-nix-cache.cachix.anduril.dev/"
-    ];
+    subs = [ "https://cache.nixos.org/" ];
   in {
     substituters = subs;
     trusted-substituters = subs;
