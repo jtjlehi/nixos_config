@@ -261,6 +261,7 @@ in
                 bind "j" "Down" { MovePane "Down"; }
                 bind "k" "Up" { MovePane "Up"; }
                 bind "l" "Right" { MovePane "Right"; }
+                bind "r" { SwitchToMode "Resize"; }
             }
             tab {
                 bind "Ctrl t" { SwitchToMode "Normal"; }
