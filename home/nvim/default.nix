@@ -151,11 +151,6 @@
               pat = "nix";
               root_dir = "vim.fs.root(0, {'flake.nix'})";
             }
-            {
-              pkg = dhall-lsp-server;
-              filetype = "dhall";
-              pat = "dhall";
-            }
           ]);
         in
           (builtins.readFile ./cmp.lua) + (builtins.concatStringsSep "\n" extras);

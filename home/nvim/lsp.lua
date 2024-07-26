@@ -130,6 +130,10 @@ lspconfig.rust_analyzer.setup({
 	},
 })
 
+-- dhall
+
+lspconfig.dhall_lsp_server.setup({})
+
 ----------------
 -- Formatting --
 ----------------
