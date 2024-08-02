@@ -32,7 +32,10 @@
     vimAlias = true;
     viAlias = true;
     defaultEditor = true;
-    extraLuaConfig = builtins.readFile ./init.lua;
+      # vim.cmd("highlight NonText guifg=${base02}")
+    extraLuaConfig = with config.lib.stylix.colors.withHashtag; ''
+      vim.cmd("highlight NonText guifg=${base03} guibg=${base01}")
+    '' + builtins.readFile ./init.lua;
     plugins = with pkgs.vimPlugins; [
       zellij-nav
       {

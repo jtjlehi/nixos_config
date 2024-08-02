@@ -79,7 +79,7 @@ vim.o.softtabstop = 4 -- num:  Number of spaces tabs count for in insert mode
 vim.o.tabstop = 4 -- num:  Number of spaces tabs count for
 vim.o.list = true
 vim.opt.listchars:append("tab:<->")
-vim.opt.listchars:append("space:•")
+vim.opt.listchars:append("lead:•")
 
 -- [[ Splits ]]
 vim.o.splitright = true -- bool: Place new window to right of current one
