@@ -33,4 +33,9 @@
       supportedFeatures = ["big-parallel" "kvm" "benchmark"];
     }
   ];
+  programs.ssh.extraConfig = ''
+    Host ghe.anduril.dev
+      HostName ghe.anduril.dev
+      User git
+  '';
 }

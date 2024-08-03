@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  lib,
-  ...
-}: {
+{ pkgs, lib, ... }: {
   imports = [
     ./window-manager
     ./shell
@@ -22,6 +16,7 @@
     enable = true;
     userName = "jtjlehi";
     userEmail = "jtjlehi@gmail.com";
+    lfs.enable = true;
   };
   programs.gh.enable = true;
   programs.gh.gitCredentialHelper = {
