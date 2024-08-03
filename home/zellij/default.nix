@@ -138,6 +138,10 @@ in
           '';
       }
     ];
+
+    programs.bacon = {
+      enable = true;
+    };
     xdg.configFile."zellij/config.kdl".text = let
       inherit (builtins) genList toString concatStringsSep;
       bindTo = {
