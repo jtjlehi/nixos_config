@@ -66,15 +66,7 @@
           config.allowUnfree = true;
           inherit system overlays;
         };
-        specialArgs =
-          inputs
-          // (
-            if vm
-            then {
-              inherit mkSharedDir;
-            }
-            else {}
-          );
+        specialArgs = inputs // (if vm then { inherit mkSharedDir; } else {});
         modules =
           [
             ./configuration.nix
@@ -85,9 +77,7 @@
               home-manager.useUserPackages = true;
               home-manager.users."yajj" = import ./home;
             }
-            {
-              networking.hostName = name;
-            }
+            { networking.hostName = name; }
             stylix.nixosModules.stylix
             (vmModule vm)
           ]
