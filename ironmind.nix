@@ -1,12 +1,12 @@
 {pkgs, ...}: let
   bwsBuildServer = {
-        hostName = "anduril@192.168.70.9";
-        system = "aarch64-linux";
-        sshKey = "/root/.ssh/nixos_build_server_key";
-        maxJobs = 64;
-        speedFactor = 64;
-        supportedFeatures = ["big-parallel" "kvm" "benchmark"];
-      };
+    hostName = "anduril@192.168.70.9";
+    system = "aarch64-linux";
+    sshKey = "/root/.ssh/nixos_build_server_key";
+    maxJobs = 64;
+    speedFactor = 64;
+    supportedFeatures = ["big-parallel" "kvm" "benchmark"];
+  };
 in {
   imports = [hardware/iron.nix];
   anduril-security = {
