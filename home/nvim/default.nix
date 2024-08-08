@@ -52,6 +52,7 @@
             rust
             vimdoc
             xml
+            javascript
           ]);
         type = "lua";
         config = ''
