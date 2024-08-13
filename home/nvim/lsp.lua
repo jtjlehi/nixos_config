@@ -134,6 +134,13 @@ lspconfig.rust_analyzer.setup({
 
 lspconfig.dhall_lsp_server.setup({})
 
+-- haskell
+
+lspconfig.hls.setup({
+	filetypes = { "haskell", "lhaskell", "cabal" },
+	cmd = { "haskell-language-server", "--lsp" },
+})
+
 ----------------
 -- Formatting --
 ----------------
