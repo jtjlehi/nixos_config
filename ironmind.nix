@@ -52,6 +52,42 @@ in {
         text = /*bash*/ ''ssh -i ${sshKey} ${hostName}'';
       };
     in [ (ssh-to "bws-build" bwsBuildServer) ];
+
+    programs.ssh.enable = true;
+    programs.ssh.matchBlocks = {
+      "ghe.anduril.dev" = {
+        hostname = "ghe.anduril.dev";
+        user = "git";
+      };
+      bws-flashing = {
+        hostname = "192.168.70.15";
+        user = "anduril";
+      };
+      system-manager = {
+        hostname = "192.168.3.5";
+        user = "anduril";
+      };
+      nx-top-ext = {
+        hostname = "192.168.3.211";
+        user = "anduril";
+        proxyJump = "bws-flashing";
+      };
+      rfsom-top-ext = {
+        hostname = "192.168.3.11";
+        user = "anduril";
+        proxyJump = "bws-flashing";
+      };
+      nx-top-int = {
+        hostname = "192.168.3.210";
+        user = "anduril";
+        proxyJump = "bws-flashing";
+      };
+      rfsom-top-int = {
+        hostname = "192.168.3.10";
+        user = "anduril";
+        proxyJump = "bws-flashing";
+      };
+    };
   };
 
 }
