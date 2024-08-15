@@ -1,4 +1,3 @@
---[[ init.lua ]]
 -- LEADER
 -- These keybindings need to be defined before the first /
 -- is called; otherwise, it will default to "\"
@@ -25,7 +24,7 @@ dig("gS", 0x03a3) -- Sigma (Σ)
 dig("gz", 0x03b6) -- zeta (ζ)
 dig("gG", 0x0393) -- Gamma (Γ)
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 -- NORMAL MODE
 -------------------------------------------------------------------------------
 
@@ -47,13 +46,20 @@ end)
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
 vim.keymap.set("t", "jj", [[<C-\><C-n>]])
 
---[[ options ]]
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- OPTIONS
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
 -- [[ Context ]]
 vim.o.colorcolumn = "80" -- str:  Show col for max line length
 vim.o.number = true -- bool: Show line numbers
 vim.o.relativenumber = true -- bool: Show relative line numbers
 vim.o.scrolloff = 1 -- int:  Min num lines of context
 vim.o.signcolumn = "yes" -- str:  Show the sign column
+vim.o.undofile = true
+vim.o.undodir = vim.o.undodir:sub(1, -2) -- remove the extra '/' at end
 
 -- [[ Spellchecker ]]
 vim.o.spell = true
@@ -90,10 +96,6 @@ vim.o.foldcolumn = "1"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
-
--- Update packpath
--- local packer_path = vim.fn.stdpath('config') .. '/site'
--- vim.o.packpath = vim.o.packpath .. ',' .. packer_path
 
 -------------------------------------------------------------------------------
 -- PLUGINS

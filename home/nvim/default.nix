@@ -191,6 +191,7 @@
         type = "lua";
         config = "require('Comment').setup()";
       }
+      # telescope
       telescope-live-grep-args-nvim
       {
         plugin = telescope-nvim;
@@ -205,6 +206,14 @@
           vim.keymap.set('n', 'fb', builtin.buffers)
           vim.keymap.set('n', 'f<C-O>', builtin.jumplist)
           vim.keymap.set('n', 'fw', builtin.grep_string)
+        '';
+      }
+      # undoTree
+      {
+        plugin = undotree;
+        type = "lua";
+        config = /* lua */ ''
+          vim.keymap.set('n', '<leader>ut', vim.cmd.UndotreeToggle)
         '';
       }
     ];
