@@ -106,6 +106,7 @@
       enableBashIntegration = true;
       settings = {};
     };
+    programs.zoxide.enable = true;
     home.packages = with pkgs;
       [
         fzf
