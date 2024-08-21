@@ -124,11 +124,7 @@ in
         name = "clippy-filter";
         # use the version of cargo and clippy that the project uses
         runtimeInputs = [pkgs.jq];
-        text =
-          /*
-          bash
-          */
-          ''
+        text = /* bash */ ''
             cargo clippy --message-format json-diagnostic-rendered-ansi -- -W clippy::pedantic | jq "
                 select(. | type == \"object\")
                 | select(has(\"message\"))
