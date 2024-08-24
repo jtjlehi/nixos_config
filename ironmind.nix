@@ -51,7 +51,13 @@ in {
         name = "ssh-${name}";
         text = /*bash*/ ''ssh -i ${sshKey} ${hostName}'';
       };
-    in [ (ssh-to "bws-build" bwsBuildServer) ];
+    in [
+      (ssh-to "bws-build" bwsBuildServer)
+      {
+        name = "warp-reconnect";
+        text = /*bash*/ "warp-cli disconnect && warp-cli connect";
+      }
+    ];
 
     programs.ssh.enable = true;
     programs.ssh.matchBlocks = {
