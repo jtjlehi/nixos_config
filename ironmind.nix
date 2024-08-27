@@ -17,25 +17,23 @@ in {
     slack
   ];
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
-  # the cachix setup is not completely declarative
   nix = {
-    settings = rec {
-      substituters = [
-        "https://cache.nixos.org/"
+    settings = let
+      trustedSubs = {
         # cache for haskell.nix
-        "https://cache.iog.io"
+        "https://cache.iog.io" = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=";
         # caches for anduril
-        "https://anduril-core-nix-cache.cachix.anduril.dev"
-        "https://anduril-pulsar-nix-cache.cachix.anduril.dev"
-      ];
-      trusted-substituters = substituters;
+        "https://anduril-core-nix-cache.cachix.anduril.dev" = "anduril-core-nix-cache.cachix.anduril.dev-1:0FYOuMqEzbSX2PmByfePpJAsSV6CW+1YWoq7b21NxHc=";
+        "https://anduril-pulsar-nix-cache.cachix.anduril.dev" = "anduril-pulsar-nix-cache.cachix.anduril.dev-1:0FYOuMqEzbSX2PmByfePpJAsSV6CW+1YWoq7b21NxHc=";
+      };
+      substituters = builtins.attrNames trustedSubs;
+      trusted-public-keys = builtins.attrValues trustedSubs;
+    in {
+      inherit substituters trusted-public-keys;
+      # the netrc file holds the passwords generated from `cachix use ...`, (I delete the rest of the files cachix generates)
+      netrc-file = "/etc/nix/netrc";
+      trusted-substituters = substituters ++ [ "https://cache.nixos.org/" ];
       builders-use-substitutes = true;
-      trusted-public-keys = [
-        "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-        "anduril-core-nix-cache.cachix.anduril.dev-1:0FYOuMqEzbSX2PmByfePpJAsSV6CW+1YWoq7b21NxHc="
-        "anduril-pulsar-nix-cache.cachix.anduril.dev-1:0FYOuMqEzbSX2PmByfePpJAsSV6CW+1YWoq7b21NxHc="
-        "polyrepo.cachix.anduril.dev-1:0FYOuMqEzbSX2PmByfePpJAsSV6CW+1YWoq7b21NxHc="
-      ];
     };
     distributedBuilds = true;
     buildMachines = [bwsBuildServer];
