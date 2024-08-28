@@ -140,11 +140,18 @@
               vim.api.nvim_create_autocmd({"BufEnter"}, {
                 pattern = { "*.${pat}" },
                 callback = function()
-                  vim.lsp.start({
-                    name = '${pkg.pname}',
-                    cmd = { '${pkg}/bin/${pkg.pname}' },
-                    root_dir = ${root_dir}
+                  -- check if there is an lsp for the buffer
+                  local clients = vim.lsp.get_clients({
+                    name = "${pkg.pname}";
+                    bufnr = vim.api.nvim_get_current_buf();
                   })
+                  if #clients == 0 then
+                    vim.lsp.start({
+                      name = '${pkg.pname}',
+                      cmd = { '${pkg}/bin/${pkg.pname}' },
+                      root_dir = ${root_dir}
+                    })
+                  end
                 end
               })
             '') (with pkgs; [
