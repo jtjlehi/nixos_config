@@ -137,8 +137,13 @@ lspconfig.dhall_lsp_server.setup({})
 -- haskell
 
 lspconfig.hls.setup({
-	filetypes = { "haskell", "lhaskell", "cabal" },
+	filetypes = { "haskell", "lhaskell" },
 	cmd = { "haskell-language-server", "--lsp" },
+	settings = {
+		haskell = {
+			formattingProvider = "fourmolu",
+		},
+	},
 })
 
 ----------------
