@@ -4,6 +4,7 @@
     ./shell
     ./zellij
     ./gtk.nix
+    ./helix.nix
     ./nvim
   ];
   home.username = "yajj";
