@@ -91,6 +91,11 @@ in {
         user = "anduril";
         proxyJump = "bws-flashing";
       };
+      vck1 = {
+        hostname = "192.168.3.90";
+        user = "anduril";
+        proxyJump = "bws-flashing";
+      };
     };
   };
 
