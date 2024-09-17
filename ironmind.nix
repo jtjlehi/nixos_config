@@ -58,10 +58,29 @@ in {
     ];
 
     programs.ssh.enable = true;
-    programs.ssh.matchBlocks = {
+    programs.ssh.matchBlocks = let
+      vck = proxyJump: {
+        inherit proxyJump;
+        hostname = "192.168.3.90";
+        user = "anduril";
+        checkHostIP = false;
+        extraOptions = {
+          "StrictHostKeyChecking" = "no";
+          "UserKnownHostsFile" = "/dev/null";
+        };
+      };
+    in {
       "ghe.anduril.dev" = {
         hostname = "ghe.anduril.dev";
         user = "git";
+      };
+      flashing1 = {
+        hostname = "192.168.70.13";
+        user = "anduril";
+      };
+      flashing2 = {
+        hostname = "192.168.70.14";
+        user = "anduril";
       };
       bws-flashing = {
         hostname = "192.168.70.15";
@@ -91,21 +110,24 @@ in {
         user = "anduril";
         proxyJump = "bws-flashing";
       };
-      vck1 = {
-        hostname = "192.168.3.90";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      vck2 = {
-        hostname = "192.168.70.14";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      vck3 = {
-        hostname = "192.168.70.15";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
+      vck1 = vck "flashing1";
+      vck2 = vck "flashing2";
+      vck3 = vck "bws-flashing";
+      # vck1 = {
+      #   hostname = "192.168.3.90";
+      #   user = "anduril";
+      #   proxyJump = "bws-flashing";
+      # };
+      # vck2 = {
+      #   hostname = "192.168.70.14";
+      #   user = "anduril";
+      #   proxyJump = "bws-flashing";
+      # };
+      # vck3 = {
+        # hostname = "192.168.70.15";
+        # user = "anduril";
+        # proxyJump = "bws-flashing";
+      # };
     };
   };
 
