@@ -116,21 +116,12 @@ in {
       vck1 = vck "flashing1";
       vck2 = vck "flashing2";
       vck3 = vck "bws-flashing";
-      # vck1 = {
-      #   hostname = "192.168.3.90";
-      #   user = "anduril";
-      #   proxyJump = "bws-flashing";
-      # };
-      # vck2 = {
-      #   hostname = "192.168.70.14";
-      #   user = "anduril";
-      #   proxyJump = "bws-flashing";
-      # };
-      # vck3 = {
-        # hostname = "192.168.70.15";
-        # user = "anduril";
-        # proxyJump = "bws-flashing";
-      # };
+      bws-build = {
+        hostname = "192.168.70.9";
+        user = "anduril";
+        identityFile = "~/.ssh/nixos_build_server_key";
+        certificateFile = "~/.ssh/nixos_build_server_key";
+      };
     };
   };
 
