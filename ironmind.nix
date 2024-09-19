@@ -1,11 +1,14 @@
 {pkgs, ...}: let
-  bwsBuildServer = {
+  rootBwsBuildServer = {
     hostName = "anduril@192.168.70.9";
     system = "aarch64-linux";
     sshKey = "/root/.ssh/nixos_build_server_key";
     maxJobs = 64;
     speedFactor = 64;
     supportedFeatures = ["big-parallel" "kvm" "benchmark"];
+  };
+  bwsBuildServer = rootBwsBuildServer // {
+    sshKey = "~/.ssh/nixos_build_server_key";
   };
 in {
   imports = [hardware/iron.nix];
@@ -36,7 +39,7 @@ in {
       builders-use-substitutes = true;
     };
     distributedBuilds = true;
-    buildMachines = [bwsBuildServer];
+    buildMachines = [rootBwsBuildServer];
   };
   programs.ssh.extraConfig = ''
     Host ghe.anduril.dev
