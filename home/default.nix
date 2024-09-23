@@ -36,7 +36,6 @@
     # compilers
     zig
     gcc
-    ghc
     gnumake
     # rust
     cargo
