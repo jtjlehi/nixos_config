@@ -62,11 +62,14 @@ in {
 
     programs.ssh.enable = true;
     programs.ssh.matchBlocks = let
-      vck = proxyJump: {
+      vck = proxyJump: rec {
         inherit proxyJump;
         hostname = "192.168.3.90";
         user = "anduril";
-        checkHostIP = false;
+        # checkHostIP = false;
+        localForwards = [
+          { bind.port = 2020; host.address = hostname; host.port = 2020; }
+        ];
         extraOptions = {
           "StrictHostKeyChecking" = "no";
           "UserKnownHostsFile" = "/dev/null";
