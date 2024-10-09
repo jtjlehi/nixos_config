@@ -10,6 +10,14 @@
   bwsBuildServer = rootBwsBuildServer // {
     sshKey = "~/.ssh/nixos_build_server_key";
   };
+  andurilBuildArm = {
+    hostName = "anduril@dev-pulsar-arm.anduril.dev";
+    system = "aarch64-linux";
+    sshKey = "home/yajj/.ssh/id_ed25519";
+    maxJobs = 64;
+    speedFactor = 64;
+    supportedFeatures = ["big-parallel" "kvm" "benchmark"];
+  };
 in {
   imports = [hardware/iron.nix];
   anduril-security = {
@@ -39,7 +47,7 @@ in {
       builders-use-substitutes = true;
     };
     distributedBuilds = true;
-    buildMachines = [rootBwsBuildServer];
+    buildMachines = [rootBwsBuildServer andurilBuildArm];
   };
   programs.ssh.extraConfig = ''
     Host ghe.anduril.dev
@@ -76,6 +84,14 @@ in {
         };
       };
     in {
+      anduril-build-x86 = {
+        hostname = "anduril@dev-pulsar-x86.anduril.dev";
+        user = "anduril";
+      };
+      anduril-build-arm = {
+        hostname = "anduril@dev-pulsar-arm.anduril.dev";
+        user = "anduril";
+      };
       "ghe.anduril.dev" = {
         hostname = "ghe.anduril.dev";
         user = "git";
