@@ -54,7 +54,7 @@ in {
       HostName ghe.anduril.dev
       User git
   '';
-  home-manager.users."yajj" = {config, ...}:  {
+  home-manager.users."yajj" = {config, lib, ...}:  {
     scripts = let
       ssh-to = name: {hostName, sshKey, ...}: {
         name = "ssh-${name}";
@@ -67,6 +67,10 @@ in {
         text = /*bash*/ "warp-cli disconnect && warp-cli connect";
       }
     ];
+    programs.git = lib.mkForce {
+      userName = "neoj";
+      userEmail = "jjacobson.ctr@anduril.com";
+    };
 
     programs.ssh.enable = true;
     programs.ssh.matchBlocks = let
