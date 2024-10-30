@@ -4,6 +4,7 @@
 }: {
   home.packages = with pkgs; [
     helix
+    clang-tools # for clangd
   ];
   programs.helix.enable = true;
   programs.helix.languages.language-server = {
