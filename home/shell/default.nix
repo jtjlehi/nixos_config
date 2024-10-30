@@ -89,7 +89,7 @@
       }
     ];
     home.sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "hx";
     };
     home.shellAliases = {
       "la" = "ls -la";

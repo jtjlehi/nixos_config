@@ -7,6 +7,7 @@
     clang-tools # for clangd
   ];
   programs.helix.enable = true;
+  programs.helix.defaultEditor = true;
   programs.helix.languages.language-server = {
     haskell-language-server = {
       command = "haskell-language-server";

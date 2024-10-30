@@ -31,7 +31,6 @@
     enable = true;
     vimAlias = true;
     viAlias = true;
-    defaultEditor = true;
     extraLuaConfig = with config.lib.stylix.colors.withHashtag; ''
       vim.cmd("highlight NonText guifg=${base03} guibg=${base01}")
     '' + builtins.readFile ./init.lua;

@@ -5,7 +5,7 @@
     ./zellij
     ./gtk.nix
     ./helix.nix
-    ./nvim
+    # ./nvim
   ];
   home.username = "yajj";
   home.homeDirectory = "/home/yajj";

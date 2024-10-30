@@ -68,7 +68,6 @@
     ripgrep
     nushell
     zsh
-    neovim
     pulseaudio
   ];
   documentation.man = {
