@@ -35,7 +35,6 @@
   home.packages = with pkgs; [
     # compilers
     zig
-    gcc
     gnumake
     # rust
     cargo
