@@ -87,6 +87,11 @@ in {
           "UserKnownHostsFile" = "/dev/null";
         };
       };
+      agx = proxyJump : rec {
+        inherit proxyJump;
+        hostname = "192.168.3.250";
+        user = "anduril";
+      };
     in {
       anduril-build-x86 = {
         hostname = "anduril@dev-pulsar-x86.anduril.dev";
@@ -139,6 +144,8 @@ in {
       vck1 = vck "flashing1";
       vck2 = vck "flashing2";
       vck3 = vck "bws-flashing";
+      agx1 = vck "flashing1";
+      agx2 = vck "flashing2";
       bws-build = {
         hostname = "192.168.70.9";
         user = "anduril";
