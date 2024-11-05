@@ -144,8 +144,8 @@ in {
       vck1 = vck "flashing1";
       vck2 = vck "flashing2";
       vck3 = vck "bws-flashing";
-      agx1 = vck "flashing1";
-      agx2 = vck "flashing2";
+      agx1 = agx "flashing1";
+      agx2 = agx "flashing2";
       bws-build = {
         hostname = "192.168.70.9";
         user = "anduril";
