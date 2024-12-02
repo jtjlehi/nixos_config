@@ -90,6 +90,7 @@
     ];
     home.sessionVariables = {
       EDITOR = "hx";
+      MLM_LICENSE_FILE = "27005@10.32.4.5";
     };
     home.shellAliases = {
       "la" = "ls -la";
