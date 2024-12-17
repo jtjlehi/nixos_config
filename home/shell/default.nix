@@ -97,6 +97,8 @@
       # as far as I can tell using this alias allows me to use tab completion from man as well
       "man" = "fman";
     };
+    programs.mcfly.enable = true;
+    programs.mcfly.fzf.enable = true;
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
