@@ -30,6 +30,7 @@
       cursor-shape.insert = "bar";
       indent-guides.render = true;
       whitespace.render = "all";
+      soft-wrap.enable = true;
     };
     keys.normal = {
       g = {
