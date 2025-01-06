@@ -235,6 +235,7 @@ in
                 bind "L" { Resize "Decrease Right"; }
                 bind "=" "+" { Resize "Increase"; }
                 bind "-" { Resize "Decrease"; }
+                bind "m" { SwitchToMode "Move"; }
             }
             pane {
                 bind "Ctrl p" { SwitchToMode "Normal"; }
@@ -268,6 +269,8 @@ in
                 bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
                 bind "h" "Left" "Up" "k" { GoToPreviousTab; }
                 bind "l" "Right" "Down" "j" { GoToNextTab; }
+                bind "H" { MoveTab "Left"; }
+                bind "L" { MoveTab "Right"; }
                 bind "n" { NewTab; SwitchToMode "Normal"; }
                 bind "x" { CloseTab; SwitchToMode "Normal"; }
                 bind "s" { ToggleActiveSyncTab; SwitchToMode "Normal"; }
