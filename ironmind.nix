@@ -60,6 +60,8 @@ in {
   environment.systemPackages = with pkgs; [
     slack
   ];
+  # this make the warp vpn happy and actually connect
+  services.resolved.extraConfig = "ResolveUnicastSingleLabel=yes";
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
   nix = {
     settings = let
