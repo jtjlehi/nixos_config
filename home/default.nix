@@ -18,6 +18,14 @@
     userName = "jtjlehi";
     userEmail = "jtjlehi@gmail.com";
     lfs.enable = true;
+    extraConfig = {
+      difftool  = {
+        prompt = false;
+        "meld" = {
+          cmd = "meld \"$LOCAl\" \"$REMOTE\"";
+        };
+      };
+    };
   };
   programs.gh.enable = true;
   programs.gh.gitCredentialHelper = {
@@ -44,6 +52,7 @@
     brave
     signal-desktop
     xplr
+    meld
   ];
 
   stylix.autoEnable = true;
