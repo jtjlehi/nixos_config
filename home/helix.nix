@@ -8,19 +8,24 @@
   ];
   programs.helix.enable = true;
   programs.helix.defaultEditor = true;
-  programs.helix.languages.language-server = {
-    haskell-language-server = {
-      command = "haskell-language-server";
-      args = ["--lsp"];
+  programs.helix.languages = {
+    language = [
+      {
+        name = "haskell";
+        formatter = { command = "fourmolu"; args = ["--stdin-input-file" "."]; };
+        auto-format = true;
+      }
+    ];
+    language-server = {
+      haskell-language-server = {
+        command = "haskell-language-server";
+        args = ["--lsp"];
+      };
+      rust-analyzer.config = {
+        check.command = "clippy";
+      };
     };
   };
-  programs.helix.languages.language = [
-    {
-      name = "haskell";
-      formatter = { command = "fourmolu"; args = ["--stdin-input-file" "."]; };
-      auto-format = true;
-    }
-  ];
   programs.helix.settings = {
     # the stylix generated theme is terrible
     theme = lib.mkForce "flexoki_dark";
