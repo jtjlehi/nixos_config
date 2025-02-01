@@ -36,6 +36,7 @@
       indent-guides.render = true;
       whitespace.render = "all";
       soft-wrap.enable = true;
+      smart-tab.enable = false;
     };
     keys.normal = {
       g = {
