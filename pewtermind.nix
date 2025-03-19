@@ -12,4 +12,13 @@
     device = "nfs.bws.sys:/data";
     fsType = "nfs";
   };
+  home-manager.users."yajj" = {config, lib, ...}:  {
+    programs.ssh.enable = true;
+    programs.ssh.matchBlocks = {
+      ironmind = {
+        hostname = "192.168.70.63";
+        user = "yajj";
+      };
+    };
+  };
 }
