@@ -5,6 +5,7 @@
   home.packages = with pkgs; [
     helix
     clang-tools # for clangd
+    lemminx
   ];
   programs.helix.enable = true;
   programs.helix.defaultEditor = true;
@@ -15,11 +16,18 @@
         formatter = { command = "fourmolu"; args = ["--stdin-input-file" "."]; };
         auto-format = true;
       }
+      {
+        name = "xml";
+        language-servers = [ "lemminx" ];
+      }
     ];
     language-server = {
       haskell-language-server = {
         command = "haskell-language-server";
         args = ["--lsp"];
+      };
+      lemminx = {
+        command = "lemminx";
       };
       rust-analyzer.config = {
         check.command = "clippy";
