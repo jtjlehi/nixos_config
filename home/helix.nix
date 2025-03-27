@@ -6,6 +6,7 @@
     helix
     clang-tools # for clangd
     lemminx
+    vhdl-ls
   ];
   programs.helix.enable = true;
   programs.helix.defaultEditor = true;
@@ -19,6 +20,10 @@
       {
         name = "xml";
         language-servers = [ "lemminx" ];
+      }
+      {
+        name = "vhdl";
+        roots = [ "vhdl_ls.toml" ];
       }
     ];
     language-server = {
