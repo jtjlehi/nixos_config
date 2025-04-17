@@ -4,7 +4,7 @@
   ...
 }: let
   kdl = _args: _props: children: children // {inherit _props _args;};
-  wasmTarget = "wasm32-wasi";
+  wasmTarget = "wasm32-unknown-unknown";
   inputs = with pkgs; [
     (rust-bin.stable.latest.default.override {
       targets = [wasmTarget];
@@ -37,14 +37,6 @@
       '';
     };
 
-  zellij-forget = mkRustWasm {
-    name = "zellij_forgot";
-    src = pkgs.fetchgit {
-      url = "https://github.com/karimould/zellij-forgot.git";
-      hash = "sha256-FOQTV4hCaeeMhODNjDYFYWeO5TvrSNok3nzczjxCQBc=";
-    };
-    cargoHash = "sha256-jJ67ptSVj6NO7fO61HwZyJaxRr3UXAeFOFAa3pYAnhc=";
-  };
 in
   with config.lib.stylix.colors.withHashtag; {
     programs.zellij.enable = true;
@@ -205,12 +197,6 @@ in
                 bind "q" { Detach; }
                 bind "?" {
                     Run "zellij" "run" "--height=80%" "-x=10%" "-f" "--width=80%" "-c" "-y=10%" "--" "fman";
-                    SwitchToMode "Normal";
-                }
-                bind "y" {
-                    LaunchOrFocusPlugin "file:${zellij-forget}/src/zellij_forgot.wasm" {
-                        floating true
-                    };
                     SwitchToMode "Normal";
                 }
                 // other

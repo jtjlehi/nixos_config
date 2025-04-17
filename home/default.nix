@@ -45,9 +45,9 @@
     zig
     gnumake
     # rust
-    cargo
-    rustc
-    clippy
+    (rust-bin.stable.latest.default.override {
+      extensions = ["rust-src" "rust-analyzer"];
+    })
     # desktop/tui stuff
     brave
     signal-desktop
