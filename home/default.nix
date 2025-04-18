@@ -15,7 +15,7 @@
   # git
   programs.git = {
     enable = true;
-    userName = "jtjlehi";
+    userName = "neoj";
     userEmail = "jtjlehi@gmail.com";
     lfs.enable = true;
     extraConfig = {

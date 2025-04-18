@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   imports = [hardware/pewter.nix];
   boot.initrd.luks.devices."luks-4e1d1440-cfed-46ef-830d-014473028fd6".device = "/dev/disk/by-uuid/4e1d1440-cfed-46ef-830d-014473028fd6";
   services.timesyncd.extraConfig = ''
@@ -20,5 +20,6 @@
         user = "yajj";
       };
     };
+    programs.git.userEmail = lib.mkForce "jjacobson@blackwiresig.com";
   };
 }
