@@ -2,6 +2,7 @@
   stylix = let
     theme = "darktooth";
   in {
+    enable = true;
     image = ../photos/blue-mistborn.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${theme}.yaml";
     polarity = "dark";
@@ -10,7 +11,7 @@
         terminal = 10;
       };
       monospace = {
-        package = pkgs.nerdfonts;
+        package = pkgs.nerd-fonts.monoid;
         name = "Monoid Nerd Font Mono";
       };
       serif = {

@@ -4,38 +4,6 @@
   ...
 }: let
   kdl = _args: _props: children: children // {inherit _props _args;};
-  wasmTarget = "wasm32-unknown-unknown";
-  inputs = with pkgs; [
-    (rust-bin.stable.latest.default.override {
-      targets = [wasmTarget];
-    })
-    wasm-pack
-    wasm-bindgen-cli
-  ];
-
-  mkRustWasm = {
-    name,
-    src,
-    cargoHash,
-    nativeBuildInputs ? [],
-  }:
-    pkgs.rustPlatform.buildRustPackage {
-      inherit name src cargoHash;
-
-      nativeBuildInputs = inputs ++ nativeBuildInputs;
-
-      doCheck = false;
-      dontCargoInstall = true;
-
-      buildPhase = ''
-        cargo build --release --target=${wasmTarget}
-
-        echo "Creating out dir"
-        mkdir -p $out/src;
-
-        cp target/${wasmTarget}/release/${name}.wasm $out/src;
-      '';
-    };
 
 in
   with config.lib.stylix.colors.withHashtag; {
@@ -56,6 +24,7 @@ in
       };
       on_force_close = "detach";
       no_pane_frames = true;
+      pane_frames = false;
     };
     xdg.configFile."zellij/layouts/default.kdl".text =
       /*

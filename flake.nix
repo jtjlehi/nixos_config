@@ -2,7 +2,8 @@
   description = "Root flake for coppermind-nix-asahi";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:Nixos/nixpkgs/d0fabf48ff93b0a55c1a8d4b34ed7661987614ae";
     apple-silicon = {
       url = "github:tpwrules/nixos-apple-silicon";
       inputs.nixpkgs.follows = "nixpkgs";
