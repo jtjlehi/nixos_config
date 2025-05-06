@@ -137,6 +137,9 @@ in {
         scale = "1";
         mode = "3440x1440@98.841hz";
       };
+      output."Dell Inc. DELL S3221QS F0PQ5Y3" = {
+        mode = "3840x2160@29.970hz";
+      };
       input = {
         "type:touchpad" = {
           dwt = "enabled";
