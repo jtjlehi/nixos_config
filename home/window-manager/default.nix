@@ -138,9 +138,6 @@ in {
         mode = "3440x1440@98.841hz";
       };
       input = {
-        "*" = {
-          xkb_options = "ctrl:swapcaps";
-        };
         "type:touchpad" = {
           dwt = "enabled";
           natural_scroll = "disabled";
