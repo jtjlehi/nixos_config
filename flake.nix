@@ -2,11 +2,9 @@
   description = "Root flake for coppermind-nix-asahi";
 
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:Nixos/nixpkgs/d0fabf48ff93b0a55c1a8d4b34ed7661987614ae";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     apple-silicon = {
       url = "github:tpwrules/nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -19,6 +17,7 @@
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     security-flake = {
       url = "git+ssh://git@ghe.anduril.dev/infosec/security-flake?ref=main";
