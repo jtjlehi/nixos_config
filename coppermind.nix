@@ -7,7 +7,6 @@
   ];
   hardware.asahi = {
     withRust = true;
-    useExperimentalGPUDriver = true;
     experimentalGPUInstallMode = "overlay";
     peripheralFirmwareDirectory = ./asahi-firmware;
   };
