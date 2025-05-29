@@ -128,6 +128,11 @@ in {
         user = "anduril";
       };
     in {
+      station35 = {
+        hostname = "ac-station35.corp.anduril.com";
+        user = "anduril";
+        identityFile = "~/.ssh/neoj_key";
+      };
       anduril-build-x86 = {
         hostname = "anduril@dev-pulsar-x86.anduril.dev";
         user = "anduril";
@@ -151,6 +156,7 @@ in {
       bws-flashing = {
         hostname = "192.168.70.15";
         user = "anduril";
+        identityFile = "~/.ssh/neoj_key";
       };
       system-manager = {
         hostname = "192.168.3.5";
