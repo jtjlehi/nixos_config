@@ -104,6 +104,13 @@ in {
         swaymsg 'input * xkb_options "altwin:swap_lalt_lwin,ctrl:swapcaps"'
       '';
     }
+    {
+      name = "turnOffAppleKeyboard";
+      runtimeInputs = with pkgs; [sway];
+      text = ''
+        swaymsg 'input "1452:833:Apple_SPI_Keyboard" events disabled'
+      '';
+    }
   ];
   programs.alacritty.enable = true;
   wayland.windowManager.sway = let
