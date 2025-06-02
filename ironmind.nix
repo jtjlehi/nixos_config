@@ -133,6 +133,11 @@ in {
         user = "anduril";
         identityFile = "~/.ssh/neoj_key";
       };
+      anduril-fpga-build = {
+        hostname = "fpga-ci-runner-onsite-3.corp.anduril.com";
+        user = "root";
+        identityFile = "~/.ssh/neoj_key";
+      };
       anduril-build-x86 = {
         hostname = "anduril@dev-pulsar-x86.anduril.dev";
         user = "anduril";
