@@ -50,13 +50,16 @@
       whitespace.render = "all";
       soft-wrap.enable = true;
       smart-tab.enable = false;
+      line-number = "relative";
     };
     keys.normal = {
       g = {
         S-l = [ "select_mode" "goto_line_end" "normal_mode" ];
         S-s = [ "select_mode" "goto_first_nonwhitespace" "normal_mode" ];
       };
-      C-x = "extend_line_above";
+      X = "extend_line_above";
+      A-x = "extend_to_line_bounds";
+      A-X = "shrink_to_line_bounds";
     };
     keys.insert = {
       j = { j = "normal_mode"; };
