@@ -21,6 +21,9 @@
 in {
   imports = [hardware/iron.nix];
 
+  # GPU Stuff
+  # (TODO: turn into an option)
+
   # Enable OpenGL
   hardware.graphics.enable = true;
 
@@ -53,16 +56,23 @@ in {
 	#   intelBusId = "PCI:0:2:0";
 	#   nvidiaBusId = "PCI:1:0:0";
 	# };
+
+  # Anduril VPN stuff
+
   anduril-security = {
     kolide-launcher.enable = true;
     cloudflare-warp.enable = true;
   };
-  environment.systemPackages = with pkgs; [
-    slack
-  ];
+  # Uncomment this if there are weird dns issues when 
+  # networking.nameservers = [ "1.1.1.1" ];
   # this make the warp vpn happy and actually connect
   services.resolved.extraConfig = "ResolveUnicastSingleLabel=yes";
+
+  # Misc
+  environment.systemPackages = with pkgs; [ slack ];
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
+
+  # Special nix settings for working with Anduril nix stuff
   nix = {
     settings = let
       trustedSubs = {
@@ -84,11 +94,17 @@ in {
     distributedBuilds = true;
     buildMachines = [rootBwsBuildServer];
   };
+
+  # ssh stuff
   programs.ssh.extraConfig = ''
     Host ghe.anduril.dev
       HostName ghe.anduril.dev
       User git
   '';
+
+  # ironmind has specific home manager configuration as well, mostly for ssh stuff
+  # (TODO: it would be nice to pull out the ssh config stuff into an option that
+  # can be used for multiple machines)
   home-manager.users."yajj" = {config, lib, ...}:  {
     scripts = let
       ssh-to = name: {hostName, sshKey, ...}: {

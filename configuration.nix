@@ -17,7 +17,7 @@
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
   };
-  networking.nameservers = [ "1.1.1.1" ];
+  # networking.nameservers = [ "1.1.1.1" ];
   # networking.networkmanager.enable = true;
   networking.timeServers = options.networking.timeServers.default;
   systemd.network.enable = true;
