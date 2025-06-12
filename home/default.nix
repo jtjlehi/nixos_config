@@ -54,6 +54,7 @@
     signal-desktop
     xplr
     meld
+    calc
   ];
 
   stylix.autoEnable = true;
