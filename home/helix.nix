@@ -51,6 +51,9 @@
       soft-wrap.enable = true;
       smart-tab.enable = false;
       line-number = "relative";
+      # diagnostics
+      end-of-line-diagnostics = "hint";
+      inline-diagnostics.cursor-line = "warning";
     };
     keys.normal = {
       g = {
