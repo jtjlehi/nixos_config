@@ -55,6 +55,7 @@
     xplr
     meld
     calc
+    jq
   ];
 
   stylix.autoEnable = true;
