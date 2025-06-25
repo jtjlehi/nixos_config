@@ -116,6 +116,7 @@
         ripgrep
         sd
         fd
+        difftastic
       ]
       ++ builtins.attrValues config.scriptApps;
   };
