@@ -6,7 +6,6 @@
   '';
   environment.systemPackages = with pkgs; [
     mattermost-desktop
-    matterhorn
   ];
   fileSystems."/home/yajj/bws/fileshare" = {
     device = "nfs.bws.sys:/data";
