@@ -42,6 +42,7 @@
   # environment.
   home.packages = with pkgs; [
     # compilers
+    cmake
     gcc
     zig
     gnumake
