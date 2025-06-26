@@ -97,6 +97,7 @@
       # as far as I can tell using this alias allows me to use tab completion from man as well
       "man" = "fman";
     };
+    home.sessionPath = ["$HOME/.cargo/bin"];
     programs.mcfly.enable = true;
     programs.mcfly.fzf.enable = true;
     programs.direnv = {
