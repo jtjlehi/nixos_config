@@ -70,6 +70,9 @@
     nushell
     zsh
     pulseaudio
+    # typst and stuff
+    typst
+    tinymist
     # podman/docker
     podman-tui
     podman-compose
