@@ -70,6 +70,7 @@
     nushell
     zsh
     pulseaudio
+    gnuplot
     # typst and stuff
     typst
     tinymist
