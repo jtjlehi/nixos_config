@@ -7,6 +7,7 @@
     clang-tools # for clangd
     lemminx
     vhdl-ls
+    nixd
   ];
   programs.helix.enable = true;
   programs.helix.defaultEditor = true;
