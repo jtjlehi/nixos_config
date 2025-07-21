@@ -70,7 +70,9 @@
     nushell
     zsh
     pulseaudio
+    # plotting and diagrams and visuals and stuff
     gnuplot
+    eog
     # typst and stuff
     typst
     tinymist
