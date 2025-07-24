@@ -70,6 +70,7 @@
     nushell
     zsh
     pulseaudio
+    bear
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
