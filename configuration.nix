@@ -71,6 +71,7 @@
     zsh
     pulseaudio
     bear
+    unzip
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
