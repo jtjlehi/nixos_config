@@ -72,6 +72,7 @@
     pulseaudio
     bear
     unzip
+    python3
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
