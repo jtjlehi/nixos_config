@@ -73,6 +73,7 @@
     bear
     unzip
     python3
+    valgrind
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
