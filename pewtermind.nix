@@ -15,7 +15,7 @@
     programs.ssh.enable = true;
     programs.ssh.matchBlocks = {
       ironmind = {
-        hostname = "192.168.70.95";
+        hostname = "192.168.70.55";
         user = "yajj";
       };
     };
