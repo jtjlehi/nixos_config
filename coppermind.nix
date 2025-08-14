@@ -6,7 +6,6 @@
     apple-silicon.nixosModules.apple-silicon-support
   ];
   hardware.asahi = {
-    withRust = true;
     experimentalGPUInstallMode = "overlay";
     peripheralFirmwareDirectory = ./asahi-firmware;
   };
