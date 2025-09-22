@@ -74,6 +74,7 @@
     unzip
     python3
     valgrind
+    bat
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
