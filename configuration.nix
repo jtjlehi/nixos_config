@@ -75,6 +75,7 @@
     python3
     valgrind
     bat
+    linuxPackages.perf
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
