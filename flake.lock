@@ -341,11 +341,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1742850260,
-        "narHash": "sha256-f1N6X4LTJ8y3PiAPUfNn8GLQZYPkB6Ny5kJA96oo520=",
+        "lastModified": 1759782228,
+        "narHash": "sha256-Ygf9BVKqFUVZx1jaOXGoxIU0mj2p0hmhJdHSdcXvVc4=",
         "ref": "main",
-        "rev": "8dbbc12463c46b019592f56ded38e950715dadbd",
-        "revCount": 21,
+        "rev": "162b3b0918bcdf962caef2572bdc3eb98e361a4c",
+        "revCount": 22,
         "type": "git",
         "url": "ssh://git@ghe.anduril.dev/infosec/security-flake"
       },
