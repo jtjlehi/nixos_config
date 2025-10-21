@@ -102,10 +102,7 @@ in {
       User git
   '';
 
-  # ironmind has specific home manager configuration as well, mostly for ssh stuff
-  # (TODO: it would be nice to pull out the ssh config stuff into an option that
-  # can be used for multiple machines)
-  home-manager.users."yajj" = {config, lib, ...}:  {
+  home-manager.users."yajj" = {lib, ...}:  {
     scripts = let
       ssh-to = name: {hostName, sshKey, ...}: {
         name = "ssh-${name}";
@@ -121,99 +118,6 @@ in {
     programs.git = lib.mkForce {
       userName = "neoj";
       userEmail = "jjacobson.ctr@anduril.com";
-    };
-
-    programs.ssh.enable = true;
-    programs.ssh.matchBlocks = let
-      vck = proxyJump: rec {
-        inherit proxyJump;
-        hostname = "192.168.3.90";
-        user = "anduril";
-        # checkHostIP = false;
-        localForwards = [
-          { bind.port = 2020; host.address = hostname; host.port = 2020; }
-        ];
-        extraOptions = {
-          "StrictHostKeyChecking" = "no";
-          "UserKnownHostsFile" = "/dev/null";
-        };
-      };
-      agx = proxyJump : rec {
-        inherit proxyJump;
-        hostname = "192.168.3.250";
-        user = "anduril";
-      };
-    in {
-      station35 = {
-        hostname = "ac-station35.corp.anduril.com";
-        user = "anduril";
-        identityFile = "~/.ssh/neoj_key";
-      };
-      anduril-fpga-build = {
-        hostname = "fpga-ci-runner-onsite-3.corp.anduril.com";
-        user = "root";
-        identityFile = "~/.ssh/neoj_key";
-      };
-      anduril-build-x86 = {
-        hostname = "anduril@dev-pulsar-x86.anduril.dev";
-        user = "anduril";
-      };
-      # anduril-build-arm = {
-      #   hostname = "anduril@dev-pulsar-arm.anduril.dev";
-      #   user = "anduril";
-      # };
-      "ghe.anduril.dev" = {
-        hostname = "ghe.anduril.dev";
-        user = "git";
-      };
-      flashing1 = {
-        hostname = "192.168.70.13";
-        user = "anduril";
-      };
-      flashing2 = {
-        hostname = "192.168.70.14";
-        user = "anduril";
-      };
-      bws-flashing = {
-        hostname = "192.168.70.15";
-        user = "anduril";
-        identityFile = "~/.ssh/neoj_key";
-      };
-      system-manager = {
-        hostname = "192.168.3.5";
-        user = "anduril";
-      };
-      nx-top-ext = {
-        hostname = "192.168.3.211";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      rfsom-top-ext = {
-        hostname = "192.168.3.11";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      nx-top-int = {
-        hostname = "192.168.3.210";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      rfsom-top-int = {
-        hostname = "192.168.3.10";
-        user = "anduril";
-        proxyJump = "bws-flashing";
-      };
-      vck1 = vck "flashing1";
-      vck2 = vck "flashing2";
-      vck3 = vck "bws-flashing";
-      agx1 = agx "flashing1";
-      agx2 = agx "flashing2";
-      bws-build = {
-        hostname = "192.168.70.9";
-        user = "anduril";
-        identityFile = "~/.ssh/nixos_build_server_key";
-        certificateFile = "~/.ssh/nixos_build_server_key";
-      };
     };
   };
 
