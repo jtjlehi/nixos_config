@@ -15,10 +15,9 @@
   # git
   programs.git = {
     enable = true;
-    userName = "neoj";
-    userEmail = "jtjlehi@gmail.com";
-    lfs.enable = true;
-    extraConfig = {
+    settings = {
+      user.name = "neoj";
+      user.email = "jtjlehi@gmail.com";
       difftool  = {
         prompt = false;
         "meld" = {
@@ -26,6 +25,7 @@
         };
       };
     };
+    lfs.enable = true;
   };
   programs.gh.enable = true;
   programs.gh.gitCredentialHelper = {

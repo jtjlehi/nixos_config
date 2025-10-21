@@ -115,9 +115,9 @@ in {
         text = /*bash*/ "warp-cli disconnect && warp-cli connect";
       }
     ];
-    programs.git = lib.mkForce {
-      userName = "neoj";
-      userEmail = "jjacobson.ctr@anduril.com";
+    programs.git.settings.user = lib.mkForce {
+      name = "neoj";
+      email = "jjacobson.ctr@anduril.com";
     };
   };
 
