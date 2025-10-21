@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  imports = [./styling];
+  imports = [./styling ./networking];
   nix.settings.experimental-features = ["nix-command" "flakes" "fetch-closure"];
   nix.settings.trusted-users = [ "root" "yajj" ];
   nix.optimise.automatic = true;
@@ -12,16 +12,6 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.wireless.iwd = {
-    enable = true;
-    settings.General.EnableNetworkConfiguration = true;
-  };
-  # networking.nameservers = [ "1.1.1.1" ];
-  # networking.networkmanager.enable = true;
-  networking.timeServers = options.networking.timeServers.default;
-  systemd.network.enable = true;
-  networking.useNetworkd = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -91,6 +81,11 @@
     generateCaches = true;
   };
 
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   hardware.graphics.enable = true;
 
   # podman/docker
@@ -111,10 +106,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

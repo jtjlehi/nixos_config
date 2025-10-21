@@ -12,13 +12,6 @@
     fsType = "nfs";
   };
   home-manager.users."yajj" = {config, lib, ...}:  {
-    programs.ssh.enable = true;
-    programs.ssh.matchBlocks = {
-      ironmind = {
-        hostname = "192.168.70.55";
-        user = "yajj";
-      };
-    };
     programs.git.userEmail = lib.mkForce "jjacobson@blackwiresig.com";
   };
 }
