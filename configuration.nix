@@ -8,11 +8,6 @@
   nix.settings.experimental-features = ["nix-command" "flakes" "fetch-closure"];
   nix.settings.trusted-users = [ "root" "yajj" ];
   nix.optimise.automatic = true;
-  nix.gc = {
-    automatic = true;
-    randomizedDelaySec = "14m";
-    options = "--delete-older-than 100d";
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -80,7 +75,7 @@
     python3
     valgrind
     bat
-    linuxPackages.perf
+    perf
     # plotting and diagrams and visuals and stuff
     gnuplot
     eog
