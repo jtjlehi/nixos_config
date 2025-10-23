@@ -68,8 +68,10 @@ in {
   # this make the warp vpn happy and actually connect
   services.resolved.extraConfig = "ResolveUnicastSingleLabel=yes";
 
+  networking.firewall.allowedUDPPorts = [ 34972 ];
+
   # Misc
-  environment.systemPackages = with pkgs; [ slack ];
+  environment.systemPackages = with pkgs; [ slack wireguard-tools ];
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
 
   # Special nix settings for working with Anduril nix stuff
@@ -113,6 +115,25 @@ in {
       {
         name = "warp-reconnect";
         text = /*bash*/ "warp-cli disconnect && warp-cli connect";
+      }
+      {
+        name = "bws-vpn";
+        text = /*bash*/
+          ''
+            # for some reason wg-quick fails if warp isn't connected
+            warp-reconnect
+            sleep 1s # actually give warp time to turn on
+            wg-quick up /etc/wireguard/wgbws.conf
+            warp-cli disconnect
+          '';
+      }
+      {
+        name = "anduril-vpn";
+        text = /*bash*/
+          ''
+            wg-quick down /etc/wireguard/wgbws.conf
+            warp-reconnect
+          '';
       }
     ];
     programs.git.settings.user = lib.mkForce {
