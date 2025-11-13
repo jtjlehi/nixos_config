@@ -135,6 +135,10 @@ in {
             warp-reconnect
           '';
       }
+      {
+        name = "check-kolide";
+        text = "cat /var/kolide-k2/k2device.kolide.com/menu.json | jq '.items'";
+      }
     ];
     programs.git.settings.user = lib.mkForce {
       name = "neoj";
