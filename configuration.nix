@@ -1,10 +1,9 @@
-{
-  pkgs,
-  options,
-  lib,
-  ...
-}: {
-  imports = [./styling ./networking];
+{ lib, ... }: {
+  imports = [
+    ./styling
+    ./networking
+    ./packages
+  ];
   nix.settings.experimental-features = ["nix-command" "flakes" "fetch-closure"];
   nix.settings.trusted-users = [ "root" "yajj" ];
   nix.optimise.automatic = true;
@@ -53,29 +52,6 @@
     hashedPassword = "$6$11223344$d3FPnBQ56DuWIYjVYfYxOiemLqPobvGAdfft6CBoDQ.i83av5TaQyr.ad6HyVnvPizZVzW2uuj6jVQLPYHaLC1";
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    gh
-    ripgrep
-    nushell
-    zsh
-    pulseaudio
-    bear
-    unzip
-    python3
-    valgrind
-    bat
-    perf
-    # plotting and diagrams and visuals and stuff
-    gnuplot
-    eog
-    # typst and stuff
-    typst
-    tinymist
-    # podman/docker
-    podman-tui
-    podman-compose
-  ];
   documentation.man = {
     enable = true;
     generateCaches = true;
