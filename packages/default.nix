@@ -1,27 +1,58 @@
-{pkgs, ...}: {
+{pkgs, lib, config, ...}: let
+
+  /*
+  Creates an option to include a single package
+
+  That option can than be directly appended to the list of packages
+  */
+  mkIncludePkgOption =
+    name:
+    default:
+    lib.mkOption {
+      inherit default;
+      example = !default;
+      description = "Whether to include the ${name} package. (defaults to ${default})";
+      type = lib.types.bool;
+      apply = enable: lib.optional enable pkgs.${name};
+    };
+  pkgConfig = config.packages;
+in {
   imports = [
     ./python.nix
   ];
-  environment.systemPackages = with pkgs; [
-    git
-    gh
-    ripgrep
-    nushell
-    zsh
-    pulseaudio
-    bear
-    unzip
-    valgrind
-    bat
-    perf
-    # plotting and diagrams and visuals and stuff
-    gnuplot
-    eog
-    # typst and stuff
-    typst
-    tinymist
-    # podman/docker
-    podman-tui
-    podman-compose
-  ];
+
+  options.packages = {
+    chat = {
+      mattermost.enable = mkIncludePkgOption "mattermost-desktop" false;
+      slack.enable = mkIncludePkgOption "slack" false;
+    };
+    networking.wireguard-tools.enable = mkIncludePkgOption "wireguard-tools" false;
+  };
+
+  config.environment.systemPackages = with pkgs;
+    [
+      git
+      gh
+      ripgrep
+      nushell
+      zsh
+      pulseaudio
+      bear
+      unzip
+      valgrind
+      bat
+      perf
+      # plotting and diagrams and visuals and stuff
+      gnuplot
+      eog
+      # typst and stuff
+      typst
+      tinymist
+      # podman/docker
+      podman-tui
+      podman-compose
+    ]
+    ++ pkgConfig.chat.mattermost.enable
+    ++ pkgConfig.chat.slack.enable
+    ++ pkgConfig.networking.wireguard-tools.enable;
 }

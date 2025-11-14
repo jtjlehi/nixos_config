@@ -70,8 +70,11 @@ in {
 
   networking.firewall.allowedUDPPorts = [ 34972 ];
 
+
   # Misc
-  environment.systemPackages = with pkgs; [ slack wireguard-tools ];
+  packages.networking.wireguard-tools.enable = true;
+  packages.chat.slack.enable = true;
+  # environment.systemPackages = with pkgs; [ slack wireguard-tools ];
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device = "/dev/disk/by-uuid/57691d44-253b-4274-a395-e1de76de708d";
 
   # Special nix settings for working with Anduril nix stuff
