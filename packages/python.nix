@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   environment.systemPackages = [
     (pkgs.python3.withPackages (ps: [
-      ps.python-lsp-server
+      ps.ruff
       ps.matplotlib
       ps.numpy
     ]))
