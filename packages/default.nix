@@ -39,12 +39,9 @@ in {
       pulseaudio
       bear
       unzip
-      valgrind
       bat
-      perf
       # plotting and diagrams and visuals and stuff
       gnuplot
-      eog
       # typst and stuff
       typst
       tinymist
@@ -52,6 +49,12 @@ in {
       podman-tui
       podman-compose
     ]
+    ++ (lib.optionals stdenv.isLinux [
+      perf
+      valgrind
+      eog
+    ])
+    ++ (lib.optionals stdenv.isDarwin [])
     ++ pkgConfig.chat.mattermost.enable
     ++ pkgConfig.chat.slack.enable
     ++ pkgConfig.networking.wireguard-tools.enable;

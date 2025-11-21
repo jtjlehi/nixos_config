@@ -26,6 +26,10 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -33,6 +37,7 @@
     home-manager,
     stylix,
     rust-overlay,
+    nix-darwin,
     ...
   } @ inputs: let
     mkSharedDir = config: path: {
@@ -82,6 +87,22 @@
           ]
           ++ extraModules;
       };
+    darwinHost = {
+      name,
+    }: nix-darwin.lib.darwinSystem {
+        pkgs = import nixpkgs {
+          config.allowUnfree = true;
+          system = "aarch64-darwin";
+          inherit overlays;
+        };
+        modules = [
+          ./configuration.nix
+          {
+            nixpkgs.hostPlatform = "aarch64-darwin";
+            system.stateVersion = 6;
+          }
+        ];
+      };
     aarchHost = host "aarch64-linux";
     x86Host = host "x86_64-linux";
   in {
@@ -95,5 +116,15 @@
       vm = true;
     };
     nixosConfigurations.coppermind = aarchHost {name = "coppermind";};
+    darwinConfigurations."Jareds-MacBook-Pro" = darwinHost { name = "Jareds-MacBook-Pro"; };
+    # darwinConfigurations."Jareds-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+    #   modules = [
+    #     ./configuration.nix
+    #     {
+    #       nixpkgs.hostPlatform = "aarch64-darwin";
+    #       system.stateVersion = 6; # Did you read the comment?
+    #     }
+    #   ];
+    # };
   };
 }
