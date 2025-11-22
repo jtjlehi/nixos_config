@@ -1,12 +1,13 @@
 { pkgs, lib, ... }: {
-  imports = [
-    ./window-manager
-    ./shell
-    ./zellij
-    ./gtk.nix
-    ./helix.nix
-    # ./nvim
-  ];
+  imports =
+    [
+      ./window-manager
+      ./shell
+      ./zellij
+      ./gtk.nix
+      ./helix.nix
+    ]
+    ++ lib.optionals stdenv.isLinux [];
   home.username = "yajj";
   home.homeDirectory = "/home/yajj";
 
@@ -37,27 +38,6 @@
     ];
   };
   programs.foot.enable = true;
-
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = with pkgs; [
-    # compilers
-    cmake
-    gcc
-    zig
-    gnumake
-    # rust
-    (rust-bin.stable.latest.default.override {
-      extensions = ["rust-src" "rust-analyzer"];
-    })
-    # desktop/tui stuff
-    brave
-    signal-desktop
-    xplr
-    meld
-    calc
-    jq
-  ];
 
   stylix.autoEnable = true;
 

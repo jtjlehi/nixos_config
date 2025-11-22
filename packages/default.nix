@@ -31,6 +31,16 @@ in {
 
   config.environment.systemPackages = with pkgs;
     [
+      # compilers
+      cmake
+      gcc
+      zig
+      gnumake
+      # rust
+      (rust-bin.stable.latest.default.override {
+        extensions = ["rust-src" "rust-analyzer"];
+      })
+      # cli tools
       git
       gh
       ripgrep
@@ -40,6 +50,8 @@ in {
       bear
       unzip
       bat
+      calc
+      jq
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
@@ -48,6 +60,9 @@ in {
       # podman/docker
       podman-tui
       podman-compose
+      # gui tools
+      brave
+      meld
     ]
     ++ (lib.optionals stdenv.isLinux [
       perf
