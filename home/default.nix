@@ -1,11 +1,16 @@
-{ pkgs, lib, config, ... }: {
-  imports =
-    [
-      ./shell
-      ./zellij
-      ./gtk.nix
-      ./helix.nix
-    ];
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  imports = [
+    ./shell
+    ./zellij
+    ./gtk.nix
+    ./helix.nix
+  ];
   home.username = lib.mkDefault "yajj";
 
   # git
@@ -14,7 +19,7 @@
     settings = {
       user.name = "neoj";
       user.email = "jtjlehi@gmail.com";
-      difftool  = {
+      difftool = {
         prompt = false;
         "meld" = {
           cmd = "meld \"$LOCAl\" \"$REMOTE\"";

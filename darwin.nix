@@ -4,9 +4,10 @@
   lib,
   config,
   ...
-}: {
-    users.users.jtjlehi = {
-      home = "/Users/jtjlehi";
-      name = "jtjlehi";
-    };
+}:
+{
+  users.users.jtjlehi = {
+    home = "/Users/jtjlehi";
+    name = "jtjlehi";
+  };
 }

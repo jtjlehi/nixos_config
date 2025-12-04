@@ -1,4 +1,5 @@
-{apple-silicon, ...}: {
+{ apple-silicon, ... }:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware/asahi.nix

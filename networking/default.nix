@@ -1,12 +1,18 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   wg-bws-cfg = config.networking.wg-bws;
-in {
-  imports = [];
+in
+{
+  imports = [ ];
 
   options.networking.wg-bws = {
     enable = lib.mkEnableOption "BWS wireguard";
-    
+
   };
 
   config = {

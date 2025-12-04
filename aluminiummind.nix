@@ -3,7 +3,8 @@
   lib,
   mkSharedDir,
   ...
-}: {
+}:
+{
   virtualisation.vmVariant.virtualisation = {
     sharedDirectories = {
       bws = mkSharedDir config "bws";
@@ -16,7 +17,10 @@
       y = 1440;
     };
     # extra opts
-    qemu.options = ["-vga std" "-display gtk,grab-on-hover=on"];
+    qemu.options = [
+      "-vga std"
+      "-display gtk,grab-on-hover=on"
+    ];
   };
   systemd.tmpfiles.settings."10-qemu-vm" = {
     "${config.users.users.yajj.home}/.dotfiles/nixos".Z = {

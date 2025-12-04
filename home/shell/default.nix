@@ -3,46 +3,53 @@
   config,
   lib,
   ...
-}: {
-  options = with lib;
-  with types; {
-    scripts = mkOption {
-      description = "a list of all the script binary packages you use";
-      type = listOf (submodule {
-        options.name = mkOption {
-          description = "the name of the script";
-          type = str;
-        };
-        options.text = mkOption {
-          description = "the actual content of the shell you're writing";
-          type = str;
-        };
-        options.runtimeInputs = mkOption {
-          description = "a list of any extra packages used by the script";
-          type = listOf package;
-          default = [];
-        };
-      });
+}:
+{
+  options =
+    with lib;
+    with types;
+    {
+      scripts = mkOption {
+        description = "a list of all the script binary packages you use";
+        type = listOf (submodule {
+          options.name = mkOption {
+            description = "the name of the script";
+            type = str;
+          };
+          options.text = mkOption {
+            description = "the actual content of the shell you're writing";
+            type = str;
+          };
+          options.runtimeInputs = mkOption {
+            description = "a list of any extra packages used by the script";
+            type = listOf package;
+            default = [ ];
+          };
+        });
+      };
+      scriptApps = mkOption {
+        type = attrsOf package;
+        description = "a list of all the actual binary applications";
+      };
     };
-    scriptApps = mkOption {
-      type = attrsOf package;
-      description = "a list of all the actual binary applications";
-    };
-  };
   config = {
     programs.bash.enable = true;
     scriptApps = lib.mkForce (
-      builtins.listToAttrs (map ({name, ...} @ app: {
-          inherit name;
-          value = pkgs.writeShellApplication app;
-        })
-        config.scripts)
+      builtins.listToAttrs (
+        map (
+          { name, ... }@app:
+          {
+            inherit name;
+            value = pkgs.writeShellApplication app;
+          }
+        ) config.scripts
+      )
     );
 
     scripts = [
       {
         name = "pull-build";
-        runtimeInputs = [config.scriptApps.g-pull];
+        runtimeInputs = [ config.scriptApps.g-pull ];
         text = ''
           cd ${config.home.homeDirectory}/.dotfiles/nixos
           OUT=$(g-pull)
@@ -69,7 +76,10 @@
       }
       {
         name = "fman";
-        runtimeInputs = with pkgs; [ripgrep fzf];
+        runtimeInputs = with pkgs; [
+          ripgrep
+          fzf
+        ];
         text = ''
           if man "$@" 2> /dev/null; then
             exit 0
@@ -97,7 +107,7 @@
       # as far as I can tell using this alias allows me to use tab completion from man as well
       "man" = "fman";
     };
-    home.sessionPath = ["$HOME/.cargo/bin"];
+    home.sessionPath = [ "$HOME/.cargo/bin" ];
     programs.mcfly.enable = true;
     programs.mcfly.fzf.enable = true;
     programs.direnv = {
@@ -108,10 +118,11 @@
     programs.starship = {
       enable = true;
       enableBashIntegration = true;
-      settings = {};
+      settings = { };
     };
     programs.zoxide.enable = true;
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       [
         fzf
         ripgrep

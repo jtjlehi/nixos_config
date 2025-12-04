@@ -1,6 +1,8 @@
-{pkgs, config, ...}: {
-  imports = [hardware/pewter.nix];
-  boot.initrd.luks.devices."luks-4e1d1440-cfed-46ef-830d-014473028fd6".device = "/dev/disk/by-uuid/4e1d1440-cfed-46ef-830d-014473028fd6";
+{ pkgs, config, ... }:
+{
+  imports = [ hardware/pewter.nix ];
+  boot.initrd.luks.devices."luks-4e1d1440-cfed-46ef-830d-014473028fd6".device =
+    "/dev/disk/by-uuid/4e1d1440-cfed-46ef-830d-014473028fd6";
   services.timesyncd.extraConfig = ''
     FallbackNTP=10.66.87.1
   '';
@@ -12,7 +14,9 @@
     device = "nfs.bws.sys:/data";
     fsType = "nfs";
   };
-  home-manager.users.${config.username} = {lib, ...}:  {
-    programs.git.userEmail = lib.mkForce "jjacobson@blackwiresig.com";
-  };
+  home-manager.users.${config.username} =
+    { lib, ... }:
+    {
+      programs.git.userEmail = lib.mkForce "jjacobson@blackwiresig.com";
+    };
 }

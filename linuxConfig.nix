@@ -4,8 +4,9 @@
   lib,
   config,
   ...
-}: {
-  imports = [./networking];
+}:
+{
+  imports = [ ./networking ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -46,7 +47,10 @@
   users.mutableUsers = false;
   users.users.${config.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "network"];
+    extraGroups = [
+      "wheel"
+      "network"
+    ];
     hashedPassword = "$6$11223344$d3FPnBQ56DuWIYjVYfYxOiemLqPobvGAdfft6CBoDQ.i83av5TaQyr.ad6HyVnvPizZVzW2uuj6jVQLPYHaLC1";
   };
 

@@ -1,7 +1,9 @@
-{ pkgs
-, lib
-, ...
-}: {
+{
+  pkgs,
+  lib,
+  ...
+}:
+{
   home.packages = with pkgs; [
     helix
     clang-tools # for clangd
@@ -15,7 +17,13 @@
     language = [
       {
         name = "haskell";
-        formatter = { command = "fourmolu"; args = ["--stdin-input-file" "."]; };
+        formatter = {
+          command = "fourmolu";
+          args = [
+            "--stdin-input-file"
+            "."
+          ];
+        };
         auto-format = true;
       }
       {
@@ -30,7 +38,7 @@
     language-server = {
       haskell-language-server = {
         command = "haskell-language-server";
-        args = ["--lsp"];
+        args = [ "--lsp" ];
       };
       lemminx = {
         command = "lemminx";
@@ -44,7 +52,7 @@
     # the stylix generated theme is terrible
     theme = lib.mkForce "flexoki_dark";
     editor = {
-      rulers = [80];
+      rulers = [ 80 ];
       color-modes = true;
       cursor-shape.insert = "bar";
       indent-guides.render = true;
@@ -58,15 +66,25 @@
     };
     keys.normal = {
       g = {
-        S-l = [ "select_mode" "goto_line_end" "normal_mode" ];
-        S-s = [ "select_mode" "goto_first_nonwhitespace" "normal_mode" ];
+        S-l = [
+          "select_mode"
+          "goto_line_end"
+          "normal_mode"
+        ];
+        S-s = [
+          "select_mode"
+          "goto_first_nonwhitespace"
+          "normal_mode"
+        ];
       };
       X = "extend_line_above";
       A-x = "extend_to_line_bounds";
       A-X = "shrink_to_line_bounds";
     };
     keys.insert = {
-      j = { j = "normal_mode"; };
+      j = {
+        j = "normal_mode";
+      };
     };
   };
 }

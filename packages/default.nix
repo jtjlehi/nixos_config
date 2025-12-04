@@ -1,13 +1,18 @@
-{pkgs, lib, config, ...}: let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
 
   /*
-  Creates an option to include a single package
+    Creates an option to include a single package
 
-  That option can than be directly appended to the list of packages
+    That option can than be directly appended to the list of packages
   */
   mkIncludePkgOption =
-    name:
-    default:
+    name: default:
     lib.mkOption {
       inherit default;
       example = !default;
@@ -16,7 +21,8 @@
       apply = enable: lib.optional enable pkgs.${name};
     };
   pkgConfig = config.packages;
-in {
+in
+{
   imports = [
     ./python.nix
   ];
@@ -29,7 +35,8 @@ in {
     networking.wireguard-tools.enable = mkIncludePkgOption "wireguard-tools" false;
   };
 
-  config.environment.systemPackages = with pkgs;
+  config.environment.systemPackages =
+    with pkgs;
     [
       # compilers
       cmake
@@ -38,7 +45,10 @@ in {
       gnumake
       # rust
       (rust-bin.stable.latest.default.override {
-        extensions = ["rust-src" "rust-analyzer"];
+        extensions = [
+          "rust-src"
+          "rust-analyzer"
+        ];
       })
       # cli tools
       git
@@ -69,7 +79,7 @@ in {
       valgrind
       eog
     ])
-    ++ (lib.optionals stdenv.isDarwin [])
+    ++ (lib.optionals stdenv.isDarwin [ ])
     ++ pkgConfig.chat.mattermost.enable
     ++ pkgConfig.chat.slack.enable
     ++ pkgConfig.networking.wireguard-tools.enable;
