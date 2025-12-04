@@ -34,6 +34,7 @@
     };
   config = {
     programs.bash.enable = true;
+    programs.zsh.enable = true;
     scriptApps = lib.mkForce (
       builtins.listToAttrs (
         map (
