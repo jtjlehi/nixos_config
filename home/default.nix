@@ -1,17 +1,12 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
   imports =
     [
-      ./window-manager
       ./shell
       ./zellij
       ./gtk.nix
       ./helix.nix
-    ]
-    ++ lib.optionals stdenv.isLinux [];
-  home.username = "yajj";
-  home.homeDirectory = "/home/yajj";
-
-  systemd.user.enable = true;
+    ];
+  home.username = lib.mkDefault "yajj";
 
   # git
   programs.git = {
@@ -37,7 +32,7 @@
       "https://ghe.anduril.dev"
     ];
   };
-  programs.foot.enable = true;
+  programs.foot.enable = pkgs.stdenv.isLinux;
 
   stylix.autoEnable = true;
 
@@ -45,5 +40,5 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  programs.home-manager.path = lib.mkForce "/home/yajj/.dotfiles/nixos";
+  programs.home-manager.path = lib.mkForce "/home/${config.home.username}/.dotfiles/nixos";
 }

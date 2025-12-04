@@ -59,6 +59,23 @@
       (import rust-overlay)
     ];
 
+    # used to setup home manager
+    hm-setup = {config, ...}: {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${config.username} = import ./home;
+    };
+
+    # used to add the username option
+    username-option = {lib, ...}: {
+      options.username = lib.mkOption {
+        default = "yajj";
+        description = "The username to use across the system";
+        type = lib.types.str;
+      };
+    };
+
+
     host = system: {
       name,
       vm ? false,
@@ -73,17 +90,16 @@
         specialArgs = inputs // (if vm then { inherit mkSharedDir; } else {});
         modules =
           [
+            username-option
             ./configuration.nix
             (./. + "/${name}.nix")
             home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."yajj" = import ./home;
-            }
+            hm-setup
             { networking.hostName = name; }
             stylix.nixosModules.stylix
             (vmModule vm)
+            ./linuxConfig.nix
+            ./home/linux.nix
           ]
           ++ extraModules;
       };
@@ -97,6 +113,14 @@
         };
         modules = [
           ./configuration.nix
+          ./darwin.nix
+          username-option
+          {
+            username = "jtjlehi";
+          }
+          home-manager.darwinModules.home-manager
+          hm-setup
+          stylix.darwinModules.stylix
           {
             nixpkgs.hostPlatform = "aarch64-darwin";
             system.stateVersion = 6;
@@ -117,14 +141,5 @@
     };
     nixosConfigurations.coppermind = aarchHost {name = "coppermind";};
     darwinConfigurations."Jareds-MacBook-Pro" = darwinHost { name = "Jareds-MacBook-Pro"; };
-    # darwinConfigurations."Jareds-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-    #   modules = [
-    #     ./configuration.nix
-    #     {
-    #       nixpkgs.hostPlatform = "aarch64-darwin";
-    #       system.stateVersion = 6; # Did you read the comment?
-    #     }
-    #   ];
-    # };
   };
 }

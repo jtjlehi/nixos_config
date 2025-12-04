@@ -2,14 +2,15 @@
   pkgs,
   options,
   lib,
+  config,
   ...
 }: {
   imports = [
     ./packages
-    # ./styling
+    ./styling
   ];
   nix.settings.experimental-features = ["nix-command" "flakes" "fetch-closure"];
-  nix.settings.trusted-users = [ "root" "yajj" "jtjlehi" ];
+  nix.settings.trusted-users = [ "root" config.username ];
   nix.optimise.automatic = true;
 
   time.timeZone = "America/Denver";

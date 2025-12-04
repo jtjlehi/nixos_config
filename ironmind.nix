@@ -107,7 +107,7 @@ in {
       User git
   '';
 
-  home-manager.users."yajj" = {lib, ...}:  {
+  home-manager.users.${config.username} = {lib, ...}:  {
     scripts = let
       ssh-to = name: {hostName, sshKey, ...}: {
         name = "ssh-${name}";
