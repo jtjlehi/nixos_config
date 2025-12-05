@@ -117,7 +117,6 @@ in
       '';
     }
   ];
-  programs.alacritty.enable = true;
   wayland.windowManager.sway =
     let
       inherit (builtins) listToAttrs attrNames;

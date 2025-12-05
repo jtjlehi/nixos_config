@@ -32,6 +32,7 @@
         description = "a list of all the actual binary applications";
       };
     };
+  imports = [ ./alacritty.nix ];
   config = {
     programs.bash.enable = true;
     programs.zsh.enable = true;
