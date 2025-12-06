@@ -37,7 +37,7 @@
     ];
     language-server = {
       haskell-language-server = {
-        command = "haskell-language-server";
+        command = "haskell-language-server-wrapper";
         args = [ "--lsp" ];
       };
       lemminx = {
