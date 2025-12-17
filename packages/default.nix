@@ -67,6 +67,7 @@ in
       bat
       calc
       jq
+      helix
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
