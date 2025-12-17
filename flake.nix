@@ -75,6 +75,7 @@
           home-manager.${modules}.home-manager
           (hm-setup entry)
           stylix.${modules}.stylix
+          ./styling
         ];
 
       # the module for the configuration with given name
@@ -132,6 +133,7 @@
           name,
           username ? "jtjlehi",
           extraModules ? [ ],
+          useHM ? true,
         }:
         nix-darwin.lib.darwinSystem (hostSystem {
           inherit name username;
@@ -139,10 +141,10 @@
           extraModules = [
             ./darwin.nix
           ]
-          ++ hm-modules {
+          ++ nixpkgs.lib.optional useHM (hm-modules {
             modules = "darwinModules";
             entry = ./home/default.nix;
-          }
+          })
           ++ extraModules;
         });
 
@@ -202,6 +204,7 @@
         {
           name = "steelmind";
           username = "jjacobson";
+          useHM = false;
         }
       ];
       formatter = mapAllPlatforms (platform: nixpkgs.legacyPackages.${platform}.nixfmt-tree);

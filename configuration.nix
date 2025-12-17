@@ -6,10 +6,7 @@
   ...
 }:
 {
-  imports = [
-    ./packages
-    ./styling # TODO: maybe move this into the `hm-modules` in `flake.nix`?
-  ];
+  imports = [ ./packages ];
   options = {
     username = lib.mkOption {
       default = "yajj";
