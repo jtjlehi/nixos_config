@@ -223,10 +223,9 @@
           {
             name = "link-dotfiles";
             script = ''
-              echo $HOME
               for child in ${./extra-config}/*; do
                 if [ -d $child ]; then
-                  ln -s "$child" "$HOME/.config"
+                  ln -si "$child" "$HOME/.config"
                 fi
               done
             '';
