@@ -42,21 +42,6 @@
       ...
     }@inputs:
     let
-      mkSharedDir = config: path: {
-        source = ''"$HOME"/${path}'';
-        target = "${config.users.users.yajj.home}/${path}";
-      };
-      vmModule =
-        vm:
-        { config, ... }:
-        if vm then
-          {
-            virtualisation.vmVariant.virtualisation.sharedDirectories = {
-              nixos-config = mkSharedDir config ".dotfiles/nixos";
-            };
-          }
-        else
-          { };
       overlays = with inputs; [
         (final: prev: {
           zjstatus = zjstatus.packages.${prev.system}.default;
@@ -66,23 +51,113 @@
 
       # used to setup home manager
       hm-setup =
+        entry:
         { config, ... }:
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${config.username} = import ./home;
+          home-manager.users.${config.username} = import entry;
         };
 
-      # used to add the username option
-      username-option =
-        { lib, ... }:
+      # gets the modules associated with home manager
+      #
+      # hm-modules ::
+      #   {
+      #     modules :: "nixosModules" | "darwinModules",
+      #     entry ? ./home/default.nix :: file,
+      #   } -> [Modules]
+      hm-modules =
         {
-          options.username = lib.mkOption {
-            default = "yajj";
-            description = "The username to use across the system";
-            type = lib.types.str;
+          modules,
+          entry ? ./home/default.nix,
+        }:
+        [
+          home-manager.${modules}.home-manager
+          (hm-setup entry)
+          stylix.${modules}.stylix
+        ];
+
+      # the module for the configuration with given name
+      #
+      # if there isn't any specific config, it returns an empty list
+      hostConfigModule =
+        name:
+        let
+          path = (./. + "/${name}.nix");
+        in
+        nixpkgs.lib.optional (builtins.pathExists path) path;
+
+      # shared configurations for all hosts
+      hostSystem =
+        {
+          name,
+          username,
+          system,
+          extraModules,
+        }:
+        {
+          inherit system;
+          pkgs = import nixpkgs {
+            inherit system overlays;
+            config.allowUnfree = true;
           };
+          modules = [
+            ./configuration.nix
+            { inherit name username; }
+          ]
+          ++ hostConfigModule name
+          ++ extraModules;
         };
+      linuxHost =
+        {
+          name,
+          username ? "yajj",
+          system,
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem (hostSystem {
+          inherit name username system;
+          extraModules = [
+            ./linux
+          ]
+          ++ hm-modules {
+            modules = "nixosModules";
+            entry = ./home/linux.nix;
+          }
+          ++ extraModules;
+        });
+
+      darwinHost =
+        {
+          name,
+          username ? "jtjlehi",
+          extraModules ? [ ],
+        }:
+        nix-darwin.lib.darwinSystem (hostSystem {
+          inherit name username;
+          system = "aarch64-darwin";
+          extraModules = [
+            ./darwin.nix
+          ]
+          ++ hm-modules {
+            modules = "darwinModules";
+            entry = ./home/default.nix;
+          }
+          ++ extraModules;
+        });
+
+      # build all the hosts using the provided `buildHost` function
+      buildHosts =
+        buildHost: hosts:
+        builtins.listToAttrs (
+          builtins.map (
+            { name, ... }@args:
+            {
+              inherit name;
+              value = buildHost args;
+            }
+          ) hosts
+        );
 
       mapPlatforms =
         platforms: f:
@@ -92,85 +167,43 @@
             value = f platform;
           }) platforms
         );
-      allPlatforms = [
+      mapAllPlatforms = mapPlatforms [
         "x86_64-linux"
         "x86_64-darwin"
         "aarch64-linux"
         "aarch64-darwin"
       ];
-      mapAllPlatforms = mapPlatforms allPlatforms;
-
-      host =
-        system:
-        {
-          name,
-          vm ? false,
-          extraModules ? [ ],
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          pkgs = import nixpkgs {
-            config.allowUnfree = true;
-            inherit system overlays;
-          };
-          specialArgs = inputs // (if vm then { inherit mkSharedDir; } else { });
-          modules = [
-            username-option
-            ./configuration.nix
-            (./. + "/${name}.nix")
-            home-manager.nixosModules.home-manager
-            hm-setup
-            { networking.hostName = name; }
-            stylix.nixosModules.stylix
-            (vmModule vm)
-            ./linuxConfig.nix
-            ./home/linux.nix
-          ]
-          ++ extraModules;
-        };
-      darwinHost =
-        {
-          name,
-        }:
-        nix-darwin.lib.darwinSystem {
-          pkgs = import nixpkgs {
-            config.allowUnfree = true;
-            system = "aarch64-darwin";
-            inherit overlays;
-          };
-          modules = [
-            ./configuration.nix
-            ./darwin.nix
-            username-option
-            {
-              username = "jtjlehi";
-            }
-            home-manager.darwinModules.home-manager
-            hm-setup
-            stylix.darwinModules.stylix
-            {
-              nixpkgs.hostPlatform = "aarch64-darwin";
-              system.stateVersion = 6;
-            }
-          ];
-        };
-      aarchHost = host "aarch64-linux";
-      x86Host = host "x86_64-linux";
     in
     {
-      nixosConfigurations.ironmind = x86Host {
-        name = "ironmind";
-        extraModules = [ inputs.security-flake.nixosModules.default ];
-      };
-      nixosConfigurations.pewtermind = x86Host { name = "pewtermind"; };
-      nixosConfigurations.aluminiummind = x86Host {
-        name = "aluminiummind";
-        vm = true;
-      };
-      nixosConfigurations.coppermind = aarchHost { name = "coppermind"; };
-      darwinConfigurations."Jareds-MacBook-Pro" = darwinHost {
-        name = "Jareds-MacBook-Pro";
-      };
+      nixosConfigurations = buildHosts linuxHost [
+        {
+          name = "ironmind";
+          system = "x86_64-linux";
+          extraModules = [ inputs.security-flake.nixosModules.default ];
+        }
+        {
+          name = "pewtermind";
+          system = "x86_64-linux";
+        }
+        {
+          name = "coppermind";
+          system = "aarch64-linux";
+        }
+        {
+          name = "aluminiummind";
+          system = "aarch64-linux";
+          username = "jjacobson";
+        }
+      ];
+      darwinConfigurations = buildHosts darwinHost [
+        {
+          name = "Jareds-MacBook-Pro";
+        }
+        {
+          name = "steelmind";
+          username = "jjacobson";
+        }
+      ];
       formatter = mapAllPlatforms (platform: nixpkgs.legacyPackages.${platform}.nixfmt-tree);
     };
 }

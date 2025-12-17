@@ -23,5 +23,6 @@ in
       settings.General.EnableNetworkConfiguration = true;
     };
     networking.useNetworkd = true;
+    networking.hostName = config.name;
   };
 }

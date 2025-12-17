@@ -8,25 +8,36 @@
 {
   imports = [
     ./packages
-    ./styling
+    ./styling # TODO: maybe move this into the `hm-modules` in `flake.nix`?
   ];
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-    "fetch-closure"
-  ];
-  nix.settings.trusted-users = [
-    "root"
-    config.username
-  ];
-  nix.optimise.automatic = true;
-
-  time.timeZone = "America/Denver";
-
-  documentation.man = {
-    enable = true;
+  options = {
+    username = lib.mkOption {
+      default = "yajj";
+      description = "The username to use across the system";
+      type = lib.types.str;
+    };
+    name = lib.mkOption {
+      description = "the name of the machine";
+      type = lib.types.str;
+    };
   };
+  config = {
+    nix.settings.experimental-features = [
+      "nix-command"
+      "flakes"
+      "fetch-closure"
+    ];
+    nix.settings.trusted-users = [
+      "root"
+      config.username
+    ];
+    nix.optimise.automatic = lib.mkIf config.nix.enable true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+    time.timeZone = lib.mkDefault "America/Denver";
+
+    documentation.man.enable = lib.mkDefault true;
+
+    # Enable the OpenSSH daemon.
+    services.openssh.enable = lib.mkDefault true;
+  };
 }
