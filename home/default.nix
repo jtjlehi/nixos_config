@@ -9,7 +9,6 @@
     ./shell
     ./zellij
     ./gtk.nix
-    ./helix.nix
   ];
   home.username = lib.mkDefault "yajj";
 

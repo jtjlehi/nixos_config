@@ -1,0 +1,25 @@
+[[language]]
+auto-format = true
+name = "haskell"
+
+[language.formatter]
+args = ["--stdin-input-file", "."]
+command = "fourmolu"
+
+[[language]]
+language-servers = ["lemminx"]
+name = "xml"
+
+[[language]]
+name = "vhdl"
+roots = ["vhdl_ls.toml"]
+
+[language-server.haskell-language-server]
+args = ["--lsp"]
+command = "haskell-language-server-wrapper"
+
+[language-server.lemminx]
+command = "lemminx"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"

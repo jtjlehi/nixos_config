@@ -43,6 +43,11 @@ in
       gcc
       zig
       gnumake
+      # lsps
+      clang-tools # for clangd
+      lemminx
+      vhdl-ls
+      nixd
       # rust
       (rust-bin.stable.latest.default.override {
         extensions = [
