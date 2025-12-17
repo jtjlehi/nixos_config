@@ -115,6 +115,7 @@
           username ? "yajj",
           system,
           extraModules ? [ ],
+          hmEntry ? ./home/linux.nix,
         }:
         nixpkgs.lib.nixosSystem (hostSystem {
           inherit name username system;
@@ -123,7 +124,7 @@
           ]
           ++ hm-modules {
             modules = "nixosModules";
-            entry = ./home/linux.nix;
+            entry = hmEntry;
           }
           ++ extraModules;
         });
@@ -195,6 +196,7 @@
           name = "aluminiummind";
           system = "aarch64-linux";
           username = "jjacobson";
+          hmEntry = ./home/default.nix;
         }
       ];
       darwinConfigurations = buildHosts darwinHost [
