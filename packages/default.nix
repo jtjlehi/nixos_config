@@ -68,6 +68,10 @@ in
       calc
       jq
       helix
+      mcfly
+      mcfly-fzf
+      fzf
+      zoxide
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
