@@ -57,6 +57,7 @@ in
       })
       # cli tools
       git
+      git-lfs
       gh
       ripgrep
       nushell
