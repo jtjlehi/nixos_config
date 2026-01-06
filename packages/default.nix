@@ -57,6 +57,7 @@ in
       })
       # cli tools
       git
+      git-lfs
       gh
       ripgrep
       nushell
@@ -68,6 +69,10 @@ in
       calc
       jq
       helix
+      mcfly
+      mcfly-fzf
+      fzf
+      zoxide
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
