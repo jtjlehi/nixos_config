@@ -48,6 +48,7 @@ in
       lemminx
       vhdl-ls
       nixd
+      neocmakelsp
       # rust
       (rust-bin.stable.latest.default.override {
         extensions = [
