@@ -32,7 +32,7 @@ in
       mattermost.enable = mkIncludePkgOption "mattermost-desktop" false;
       slack.enable = mkIncludePkgOption "slack" false;
     };
-    networking.wireguard-tools.enable = mkIncludePkgOption "wireguard-tools" false;
+    networking.wireguard.enable = lib.mkEnableOption "wireguard";
   };
 
   config.environment.systemPackages =
@@ -94,5 +94,8 @@ in
     ++ (lib.optionals stdenv.isDarwin [ ])
     ++ pkgConfig.chat.mattermost.enable
     ++ pkgConfig.chat.slack.enable
-    ++ pkgConfig.networking.wireguard-tools.enable;
+    ++ (lib.optionals pkgConfig.networking.wireguard.enable [
+      wireguard-tools
+      wireguard-go
+    ]);
 }

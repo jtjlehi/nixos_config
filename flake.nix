@@ -211,17 +211,22 @@
       ];
       formatter = mapAllPlatforms (platform: nixpkgs.legacyPackages.${platform}.nixfmt-tree);
 
-      apps = mapAllPlatforms (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-            buildScript = { name, script }: {
+      apps = mapAllPlatforms (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          buildScript =
+            { name, script }:
+            {
               inherit name;
               value = {
                 type = "app";
                 program = pkgs.lib.getExe (pkgs.writeShellScriptBin name script);
               };
             };
-            buildScripts = scripts: builtins.listToAttrs (builtins.map buildScript scripts);
-        in buildScripts [
+          buildScripts = scripts: builtins.listToAttrs (builtins.map buildScript scripts);
+        in
+        buildScripts [
           {
             name = "link-dotfiles";
             script = ''
@@ -232,6 +237,7 @@
               done
             '';
           }
-        ]);
+        ]
+      );
     };
 }

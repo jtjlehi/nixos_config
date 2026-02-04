@@ -77,7 +77,7 @@ in
   networking.firewall.allowedUDPPorts = [ 34972 ];
 
   # Misc
-  packages.networking.wireguard-tools.enable = true;
+  packages.networking.wireguard.enable = true;
   packages.chat.slack.enable = true;
   # environment.systemPackages = with pkgs; [ slack wireguard-tools ];
   boot.initrd.luks.devices."luks-57691d44-253b-4274-a395-e1de76de708d".device =
