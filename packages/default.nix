@@ -75,7 +75,9 @@ in
       mcfly-fzf
       fzf
       zoxide
+      # Claude stuff
       awscli2
+      claude-code
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
