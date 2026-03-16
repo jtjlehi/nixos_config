@@ -74,6 +74,7 @@ in
       mcfly-fzf
       fzf
       zoxide
+      awscli2
       # plotting and diagrams and visuals and stuff
       gnuplot
       # typst and stuff
