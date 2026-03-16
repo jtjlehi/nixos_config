@@ -43,6 +43,7 @@ in
       gcc
       zig
       gnumake
+      dhall
       # lsps
       clang-tools # for clangd
       lemminx
