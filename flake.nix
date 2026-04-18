@@ -142,7 +142,7 @@
           extraModules = [
             ./darwin.nix
           ]
-          ++ nixpkgs.lib.optional useHM (hm-modules {
+          ++ nixpkgs.lib.optionals useHM (hm-modules {
             modules = "darwinModules";
             entry = ./home/default.nix;
           })
