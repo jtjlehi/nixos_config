@@ -26,6 +26,10 @@
       };
     };
     lfs.enable = true;
+    ignores = [
+      ".DS_Store"
+      "**/.claude/settings.local.json"
+    ];
   };
   programs.gh.enable = true;
   programs.gh.gitCredentialHelper = {
